@@ -79,7 +79,7 @@ public class Tilemap
             None,
             Ground,
             Path,
-            Dirt,
+            Grass,
             Background,
         }
 

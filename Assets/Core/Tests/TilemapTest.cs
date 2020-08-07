@@ -43,7 +43,7 @@ public class TilemapTest : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            tilemapSprite = Tilemap.Tile.Sprite.Dirt;
+            tilemapSprite = Tilemap.Tile.Sprite.Grass;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.O))
