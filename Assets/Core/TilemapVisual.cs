@@ -121,7 +121,8 @@ public class TilemapVisual : MonoBehaviour
             box = gameObject.AddComponent<BoxCollider2D>();
         }
         box.size = new Vector2(grid.GetWidth() * grid.GetCellSize(), grid.GetHeight() * grid.GetCellSize());
-        box.offset = new Vector2(grid.GetWidth() * grid.GetCellSize() / 2, grid.GetHeight() * grid.GetCellSize() / 2);
+
+        box.offset = new Vector2(grid.GetWorldPosition(Mathf.RoundToInt(grid.GetWidth() / 2), Mathf.RoundToInt(grid.GetHeight() / 2)).x, grid.GetWorldPosition(Mathf.RoundToInt(grid.GetWidth() / 2), Mathf.RoundToInt(grid.GetHeight() / 2)).y + grid.GetCellSize() / 2);
         mesh.vertices = vertices;
         mesh.uv = uv;
         mesh.triangles = triangles;

@@ -47,9 +47,6 @@ public class LevelManager : MonoBehaviour
     }
     private void SpawnFloor(FloorLean lean, int index)
     {
-        Tilemap tilemap = new Tilemap(width, 1, 1f, Vector3.zero);
-        TilemapVisual visual = Instantiate(tilemapVisual);
-        tilemap.SetTilemapVisual(visual);
         float rotation = 0;
         float xPosition = 0;
 
@@ -70,9 +67,11 @@ public class LevelManager : MonoBehaviour
             default:
                 break;
         }
-
+        Tilemap tilemap = new Tilemap(width, 1, 1f, new Vector3(xPosition, index * distanceBetweenFloors));
+        TilemapVisual visual = Instantiate(tilemapVisual);
+        tilemap.SetTilemapVisual(visual);
         visual.transform.RotateAround(visual.GetComponent<BoxCollider2D>().bounds.center, Vector3.forward, rotation);
-        visual.transform.Translate(xPosition, index * distanceBetweenFloors - 0.2f, 0, Space.World);
+        // visual.transform.Translate(xPosition, 0, 0, Space.World);
         bool topFloor = index == floors;
         for (int x = 0; x < tilemap.grid.GetWidth(); x++)
         {

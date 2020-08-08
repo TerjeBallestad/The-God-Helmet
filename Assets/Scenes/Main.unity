@@ -585,7 +585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemapVisual: {fileID: 1259182199}
   floors: 5
-  width: 10
+  width: 20
   distanceBetweenFloors: 3
 --- !u!4 &1397317320
 Transform:

@@ -7,8 +7,6 @@ public class Pathfinding
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
     public static Pathfinding Instance { get; private set; }
-
-
     private Grid<PathNode> grid;
     private List<PathNode> openList;
     private List<PathNode> closedList;
@@ -97,9 +95,7 @@ public class Pathfinding
                         openList.Add(neighbourNode);
                     }
                 }
-
             }
-
         }
         // Out of nodes on the openList
         return null;
@@ -125,7 +121,6 @@ public class Pathfinding
         int yDistance = Mathf.Abs(a.y - b.y);
         int remaining = Mathf.Abs(xDistance - yDistance);
         return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
-
     }
 
     private PathNode GetLowestFCostNode(List<PathNode> nodes)
@@ -170,7 +165,6 @@ public class Pathfinding
 
         return neighbours;
     }
-
     public PathNode GetNode(int x, int y)
     {
         return grid.GetCellObject(x, y);
