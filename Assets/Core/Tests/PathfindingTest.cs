@@ -7,7 +7,7 @@ using CodeMonkey.Utils;
 public class PathfindingTest : MonoBehaviour
 {
     private Pathfinding pathfinding;
-    // Start is called before the first frame update
+
     void Start()
     {
         pathfinding = new Pathfinding(100, 100);

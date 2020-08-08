@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CodeMonkey.Utils;
 
 public class MoveVelocity : MonoBehaviour, IMoveVelocity
 {
@@ -18,5 +19,6 @@ public class MoveVelocity : MonoBehaviour, IMoveVelocity
     private void FixedUpdate()
     {
         rb.velocity = direction * speed;
+        // transform.Translate(UtilsClass.PixelPerfectClamp(transform.position, 48f));
     }
 }

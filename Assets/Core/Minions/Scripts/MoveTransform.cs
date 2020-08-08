@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CodeMonkey.Utils;
 
 public class MoveTransform : MonoBehaviour, IMoveVelocity
 {
@@ -14,14 +15,6 @@ public class MoveTransform : MonoBehaviour, IMoveVelocity
 
     private void Update()
     {
-        transform.position += PixelPerfectClamp(direction * speed * Time.deltaTime, 48f);
-    }
-    private Vector3 PixelPerfectClamp(Vector3 velocity, float pixelsPerUnit)
-    {
-        Vector3 VelocityInPixels = new Vector3(
-            Mathf.RoundToInt(velocity.x * pixelsPerUnit),
-            Mathf.RoundToInt(velocity.y * pixelsPerUnit), 0
-        );
-        return VelocityInPixels / pixelsPerUnit;
+        transform.position += UtilsClass.PixelPerfectClamp(direction * speed * Time.deltaTime, 48f);
     }
 }

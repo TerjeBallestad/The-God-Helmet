@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CodeMonkey.Utils;
 
 namespace CodeMonkey.MonoBehaviours
 {
@@ -101,17 +102,17 @@ namespace CodeMonkey.MonoBehaviours
                     newCameraPosition = cameraFollowPosition;
                 }
 
-                // transform.position = newCameraPosition;
-                transform.position = PixelPerfectClamp(new Vector3(newCameraPosition.x, newCameraPosition.y, -10f), 48);
+                transform.position = newCameraPosition;
+                if (newCameraPosition.x < myCamera.orthographicSize)
+                {
+                    newCameraPosition.x = myCamera.orthographicSize;
+                }
+                if (newCameraPosition.y < myCamera.orthographicSize)
+                {
+                    newCameraPosition.y = myCamera.orthographicSize;
+                }
+                transform.position = UtilsClass.PixelPerfectClamp(new Vector3(newCameraPosition.x, newCameraPosition.y, -1000f), 48);
             }
-        }
-        private Vector3 PixelPerfectClamp(Vector3 velocity, float pixelsPerUnit)
-        {
-            Vector3 VelocityInPixels = new Vector3(
-                Mathf.RoundToInt(velocity.x * pixelsPerUnit),
-                Mathf.RoundToInt(velocity.y * pixelsPerUnit), -1000f
-            );
-            return VelocityInPixels / pixelsPerUnit;
         }
         private void HandleZoom()
         {

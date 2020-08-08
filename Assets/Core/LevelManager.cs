@@ -14,13 +14,14 @@ public class LevelManager : MonoBehaviour
     public int floors = 5;
     public int width = 20;
     public int distanceBetweenFloors = 10;
-    private Grid<LevelTile> GameLogic;
-    private Grid<Pathfinding> Pathfinding;
-    private Grid<TilemapVisual> Sprites;
+    private Grid<LevelTile> gameLogic;
+    private Pathfinding pathfinding;
+    private List<TilemapVisual> sprites;
 
     private void Start()
     {
         SpawnFloors();
+        CreatePathfinding();
     }
 
     private void SpawnFloors()
@@ -82,8 +83,22 @@ public class LevelManager : MonoBehaviour
                 else tile.SetTileSprite(Tilemap.Tile.Sprite.Path);
             }
         }
+        sprites.Add(visual);
+    }
+    private void CreatePathfinding()
+    {
+        pathfinding = new Pathfinding(width, floors * distanceBetweenFloors);
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < floors * distanceBetweenFloors; y += distanceBetweenFloors)
+            {
+
+                pathfinding.GetNode(Mathf.Clamp(x, 1, width - 2), y).SetIsWalkable(false);
+            }
+        }
     }
 }
+
 
 public class LevelTile
 {

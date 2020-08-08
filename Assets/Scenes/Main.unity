@@ -267,8 +267,9 @@ GameObject:
   - component: {fileID: 662693362}
   - component: {fileID: 662693361}
   - component: {fileID: 662693363}
-  - component: {fileID: 662693365}
   - component: {fileID: 662693366}
+  - component: {fileID: 662693365}
+  - component: {fileID: 662693367}
   - component: {fileID: 662693364}
   m_Layer: 0
   m_Name: Dragon warrior
@@ -372,7 +373,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 662693360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f82f12bc7ca8147688c3f74d2a238051, type: 3}
+  m_Script: {fileID: 11500000, guid: 2e8a05c62be8843979696c932fd040ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
@@ -385,7 +386,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 662693360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1041fa4a6dcf34aa088fc492e43f7348, type: 3}
+  m_Script: {fileID: 11500000, guid: 7467e09d4d97547f5b89e9d07cac4a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!70 &662693366
@@ -404,6 +405,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0.03, y: 0.74}
   m_Size: {x: 0.49, y: 1.16}
   m_Direction: 0
+--- !u!114 &662693367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662693360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b645386e2ed8c4139ae61b8b04424689, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1200933999
 GameObject:
   m_ObjectHideFlags: 0

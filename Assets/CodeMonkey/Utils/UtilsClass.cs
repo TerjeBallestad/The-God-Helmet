@@ -303,7 +303,14 @@ namespace CodeMonkey.Utils
             }
         }
 
-
+        public static Vector3 PixelPerfectClamp(Vector3 velocity, float pixelsPerUnit)
+        {
+            Vector3 VelocityInPixels = new Vector3(
+                Mathf.RoundToInt(velocity.x * pixelsPerUnit),
+                Mathf.RoundToInt(velocity.y * pixelsPerUnit), velocity.z
+            );
+            return VelocityInPixels / pixelsPerUnit;
+        }
 
         // Returns 00-FF, value 0->255
         public static string Dec_to_Hex(int value)

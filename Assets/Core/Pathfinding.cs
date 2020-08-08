@@ -144,9 +144,9 @@ public class Pathfinding
             //left
             neighbours.Add(GetNode(currentNode.x - 1, currentNode.y));
             //left down
-            if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x - 1, currentNode.y - 1));
+            // if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x - 1, currentNode.y - 1));
             //left up
-            if (currentNode.y + 1 < grid.GetHeight()) neighbours.Add(GetNode(currentNode.x - 1, currentNode.y + 1));
+            // if (currentNode.y + 1 < grid.GetHeight()) neighbours.Add(GetNode(currentNode.x - 1, currentNode.y + 1));
 
         }
         if (currentNode.x + 1 < grid.GetWidth())
@@ -154,9 +154,9 @@ public class Pathfinding
             //right
             neighbours.Add(GetNode(currentNode.x + 1, currentNode.y));
             //right down
-            if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x + 1, currentNode.y - 1));
+            // if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x + 1, currentNode.y - 1));
             // right up
-            if (currentNode.y + 1 < grid.GetHeight()) neighbours.Add(GetNode(currentNode.x + 1, currentNode.y + 1));
+            // if (currentNode.y + 1 < grid.GetHeight()) neighbours.Add(GetNode(currentNode.x + 1, currentNode.y + 1));
         }
         //down
         if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x, currentNode.y - 1));
