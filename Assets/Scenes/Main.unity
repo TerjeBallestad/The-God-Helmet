@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 662693367}
   - component: {fileID: 662693364}
   m_Layer: 0
-  m_Name: Dragon warrior
+  m_Name: Minion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
