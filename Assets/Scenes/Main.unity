@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AssetsPPU: 48
-  m_RefResolutionX: 576
-  m_RefResolutionY: 324
+  m_RefResolutionX: 624
+  m_RefResolutionY: 372
   m_UpscaleRT: 0
   m_PixelSnapping: 1
   m_CropFrameX: 0
@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 662693365}
   - component: {fileID: 662693367}
   - component: {fileID: 662693364}
+  - component: {fileID: 662693368}
   m_Layer: 0
   m_Name: Minion
   m_TagString: Untagged
@@ -318,7 +319,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 57d902f6109b4418982826e6cc7096b6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f5123563746784b5cb68a6ab4e8abb30, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -402,8 +403,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.03, y: 0.74}
-  m_Size: {x: 0.49, y: 1.16}
+  m_Offset: {x: -0.03, y: 0.45}
+  m_Size: {x: 0.29, y: 0.0001}
   m_Direction: 0
 --- !u!114 &662693367
 MonoBehaviour:
@@ -417,6 +418,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b645386e2ed8c4139ae61b8b04424689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &662693368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662693360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d765fdd854848479c58df923f348cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 3989227b8b48e488e88b08427ba5f1d1, type: 2}
 --- !u!1 &1200933999
 GameObject:
   m_ObjectHideFlags: 0

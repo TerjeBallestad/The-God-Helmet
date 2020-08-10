@@ -187,7 +187,7 @@ public class PathNode
         this.grid = grid;
         this.x = x;
         this.y = y;
-        walkable = true;
+        walkable = false;
     }
 
     public void CalculateFCost()
@@ -202,7 +202,7 @@ public class PathNode
 
     public override string ToString()
     {
-        return x + "," + y;
+        return walkable.ToString();
     }
 
 }

@@ -20,8 +20,8 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        SpawnFloors();
         CreatePathfinding();
+        SpawnFloors();
     }
 
     private void SpawnFloors()
@@ -78,9 +78,11 @@ public class LevelManager : MonoBehaviour
         {
             for (int y = 0; y < tilemap.grid.GetHeight(); y++)
             {
+                pathfinding.GetGrid().GetCellObject(x, index * distanceBetweenFloors + 1).SetIsWalkable(true);
                 Tilemap.Tile tile = tilemap.grid.GetCellObject(x, y);
                 if (topFloor) tile.SetTileSprite(Tilemap.Tile.Sprite.Grass);
                 else tile.SetTileSprite(Tilemap.Tile.Sprite.Path);
+
             }
         }
         sprites.Add(visual);
@@ -88,19 +90,13 @@ public class LevelManager : MonoBehaviour
     private void CreatePathfinding()
     {
         pathfinding = new Pathfinding(width, floors * distanceBetweenFloors);
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < floors * distanceBetweenFloors; y += distanceBetweenFloors)
-            {
+        // for (int x = 0; x < width; x++)
+        // {
+        //     for (int y = 0; y < floors * distanceBetweenFloors; y += distanceBetweenFloors)
+        //     {
 
-                pathfinding.GetNode(Mathf.Clamp(x, 1, width - 2), y).SetIsWalkable(false);
-            }
-        }
+        //         pathfinding.GetNode(Mathf.Clamp(x, 1, width - 2), y).SetIsWalkable(false);
+        //     }
+        // }
     }
-}
-
-
-public class LevelTile
-{
-
 }
