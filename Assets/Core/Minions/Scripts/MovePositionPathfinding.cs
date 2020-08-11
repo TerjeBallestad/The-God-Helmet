@@ -9,9 +9,10 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
 
     public void SetMovePosition(Vector3 position)
     {
-        path = Pathfinding.Instance.FindPath(transform.position, position);
-        if (path.Count > 0)
+        List<Vector3> tempPath = Pathfinding.Instance.FindPath(transform.position, position);
+        if (tempPath != null && tempPath.Count > 0)
         {
+            path = tempPath;
             for (int i = 0; i < path.Count - 1; i++)
             {
                 Debug.DrawLine(path[i], path[i + 1], Color.green, 3f);
@@ -27,7 +28,6 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
             Vector3 nextPathPosition = path[pathIndex];
             Vector3 direction = (nextPathPosition - transform.position).normalized;
             GetComponent<IMoveVelocity>().SetVelocity(direction);
-
             float reachedTargetDistance = 0.5f;
             if (Vector3.Distance(transform.position, nextPathPosition) < reachedTargetDistance)
             {

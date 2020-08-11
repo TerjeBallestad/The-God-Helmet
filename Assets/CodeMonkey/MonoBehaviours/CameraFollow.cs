@@ -28,6 +28,13 @@ namespace CodeMonkey.MonoBehaviours
         private Camera myCamera;
         private Func<Vector3> GetCameraFollowPositionFunc;
         private Func<float> GetCameraZoomFunc;
+        float minX;
+        float minY;
+        float maxX;
+        float maxY;
+        float verticalExtent;
+        float horizontalExtent;
+
 
         public void Setup(Func<Vector3> GetCameraFollowPositionFunc, Func<float> GetCameraZoomFunc, bool teleportToFollowPosition, bool instantZoom)
         {
@@ -51,6 +58,17 @@ namespace CodeMonkey.MonoBehaviours
         private void Start()
         {
             myCamera = transform.GetComponent<Camera>();
+
+            verticalExtent = myCamera.orthographicSize;
+            horizontalExtent = verticalExtent * Screen.width / Screen.height;
+            minX = horizontalExtent / 2;
+            minY = myCamera.orthographicSize;
+            maxX = LevelManager.Instance.width - horizontalExtent;
+            maxY = verticalExtent - LevelManager.Instance.floors * LevelManager.Instance.distanceBetweenFloors / 2;
+            Vector3 initialPosition = new Vector3();
+            initialPosition.x = 10;
+            initialPosition.y = myCamera.orthographicSize;
+            transform.position = initialPosition;
         }
 
         public void SetCameraFollowPosition(Vector3 cameraFollowPosition)
@@ -102,16 +120,13 @@ namespace CodeMonkey.MonoBehaviours
                     newCameraPosition = cameraFollowPosition;
                 }
 
+                newCameraPosition.x = 10;
+                newCameraPosition.y = Mathf.Clamp(newCameraPosition.y, myCamera.orthographicSize, maxY);
+
+                newCameraPosition = UtilsClass.PixelPerfectClamp(new Vector3(newCameraPosition.x, newCameraPosition.y, -1000f), 48);
                 transform.position = newCameraPosition;
-                if (newCameraPosition.x < myCamera.orthographicSize)
-                {
-                    newCameraPosition.x = myCamera.orthographicSize;
-                }
-                if (newCameraPosition.y < myCamera.orthographicSize)
-                {
-                    newCameraPosition.y = myCamera.orthographicSize;
-                }
-                transform.position = UtilsClass.PixelPerfectClamp(new Vector3(newCameraPosition.x, newCameraPosition.y, -1000f), 48);
+
+
             }
         }
         private void HandleZoom()

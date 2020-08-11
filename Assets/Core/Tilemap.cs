@@ -10,9 +10,9 @@ public class Tilemap
 
     public Grid<GameTile> grid;
 
-    public Tilemap(int width, int height, float cellSize, Vector3 originPosition)
+    public Tilemap(int width, int height, float cellSize, Vector3 originPosition, bool showDebug = true)
     {
-        grid = new Grid<GameTile>(width, height, cellSize, originPosition, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y));
+        grid = new Grid<GameTile>(width, height, cellSize, originPosition, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y), showDebug);
         new Pathfinding(grid);
     }
 

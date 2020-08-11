@@ -158,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AssetsPPU: 48
   m_RefResolutionX: 576
-  m_RefResolutionY: 324
+  m_RefResolutionY: 517
   m_UpscaleRT: 0
   m_PixelSnapping: 1
   m_CropFrameX: 0
@@ -338,7 +338,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 662693360}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.97, y: 0.87, z: 0}
+  m_LocalPosition: {x: 8.94, y: 0.87, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -611,8 +611,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapVisual: {fileID: 1259182199}
+  showDebugGrid: 0
   floors: 5
-  width: 20
+  width: 16
   distanceBetweenFloors: 3
 --- !u!4 &1397317320
 Transform:

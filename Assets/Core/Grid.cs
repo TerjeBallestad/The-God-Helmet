@@ -20,7 +20,7 @@ public class Grid<TCell>
     private TCell[,] grid;
     private TextMesh[,] debugText;
 
-    public Grid(int width, int height, float cellSize, Vector3 origin, Func<Grid<TCell>, int, int, TCell> createCellObject)
+    public Grid(int width, int height, float cellSize, Vector3 origin, Func<Grid<TCell>, int, int, TCell> createCellObject, bool showDebug = false)
     {
         this.columns = width;
         this.rows = height;
@@ -37,8 +37,6 @@ public class Grid<TCell>
                 grid[x, y] = createCellObject(this, x, y);
             }
         }
-
-        bool showDebug = false;
 
         if (showDebug)
         {

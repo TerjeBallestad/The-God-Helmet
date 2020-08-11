@@ -14,7 +14,6 @@ public class Pathfinding
     {
         Instance = this;
         this.grid = grid;
-        Debug.Log(Instance);
     }
     public Grid<GameTile> GetGrid()
     {
@@ -35,7 +34,7 @@ public class Pathfinding
             List<Vector3> vectorPath = new List<Vector3>();
             foreach (GameTile node in path)
             {
-                vectorPath.Add(new Vector3(node.x, node.y) * grid.GetCellSize() + Vector3.one * grid.GetCellSize() * .5f);
+                vectorPath.Add(new Vector3(node.x + (grid.GetCellSize() * 0.5f), node.y + grid.GetCellSize()));
             }
             return vectorPath;
         }
