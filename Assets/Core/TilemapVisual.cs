@@ -20,7 +20,7 @@ public class TilemapVisual : MonoBehaviour
     [System.Serializable]
     public struct TilemapSpriteUV
     {
-        public Tilemap.Tile.Sprite tilemapSprite;
+        public GameTile.Sprite tilemapSprite;
         public Vector2Int uv00Pixels;
         public Vector2Int uv11Pixels;
     }
@@ -32,11 +32,11 @@ public class TilemapVisual : MonoBehaviour
     }
 
     [SerializeField] private TilemapSpriteUV[] tilemapSpriteUVArray;
-    private Grid<Tilemap.Tile> grid;
+    private Grid<GameTile> grid;
     private Mesh mesh;
     private bool updateMesh;
     private BoxCollider2D box;
-    private Dictionary<Tilemap.Tile.Sprite, UVCoords> uvCoordsDictionary;
+    private Dictionary<GameTile.Sprite, UVCoords> uvCoordsDictionary;
 
     private void Awake()
     {
@@ -46,7 +46,7 @@ public class TilemapVisual : MonoBehaviour
         float textureWidth = texture.width;
         float textureHeight = texture.height;
 
-        uvCoordsDictionary = new Dictionary<Tilemap.Tile.Sprite, UVCoords>();
+        uvCoordsDictionary = new Dictionary<GameTile.Sprite, UVCoords>();
 
         foreach (TilemapSpriteUV tilemapSpriteUV in tilemapSpriteUVArray)
         {
@@ -58,7 +58,7 @@ public class TilemapVisual : MonoBehaviour
         }
     }
 
-    public void SetGrid(Tilemap tilemap, Grid<Tilemap.Tile> grid)
+    public void SetGrid(Tilemap tilemap, Grid<GameTile> grid)
     {
         this.grid = grid;
         UpdateTilemapVisual();
@@ -72,7 +72,7 @@ public class TilemapVisual : MonoBehaviour
         updateMesh = true;
     }
 
-    private void Grid_OnGridValueChanged(object sender, Grid<Tilemap.Tile>.OnGridChangedEventArgs e)
+    private void Grid_OnGridValueChanged(object sender, Grid<GameTile>.OnGridChangedEventArgs e)
     {
         updateMesh = true;
     }
@@ -97,10 +97,10 @@ public class TilemapVisual : MonoBehaviour
                 int index = x * grid.GetHeight() + y;
                 Vector3 quadSize = new Vector3(1, 1) * grid.GetCellSize();
 
-                Tilemap.Tile gridObject = grid.GetCellObject(x, y);
-                Tilemap.Tile.Sprite tilemapSprite = gridObject.GetTilemapSprite();
+                GameTile gridObject = grid.GetCellObject(x, y);
+                GameTile.Sprite tilemapSprite = gridObject.GetTilemapSprite();
                 Vector2 gridUV00, gridUV11;
-                if (tilemapSprite == Tilemap.Tile.Sprite.None)
+                if (tilemapSprite == GameTile.Sprite.None)
                 {
                     gridUV00 = Vector2.zero;
                     gridUV11 = Vector2.zero;
@@ -115,14 +115,14 @@ public class TilemapVisual : MonoBehaviour
                 MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + quadSize * .5f, 0f, quadSize, gridUV00, gridUV11);
             }
         }
-        gameObject.TryGetComponent<BoxCollider2D>(out box);
-        if (box == null)
-        {
-            box = gameObject.AddComponent<BoxCollider2D>();
-        }
-        box.size = new Vector2(grid.GetWidth() * grid.GetCellSize(), grid.GetHeight() * grid.GetCellSize());
+        // gameObject.TryGetComponent<BoxCollider2D>(out box);
+        // if (box == null)
+        // {
+        //     box = gameObject.AddComponent<BoxCollider2D>();
+        // }
+        // box.size = new Vector2(grid.GetWidth() * grid.GetCellSize(), grid.GetHeight() * grid.GetCellSize());
 
-        box.offset = new Vector2(grid.GetWorldPosition(Mathf.RoundToInt(grid.GetWidth() / 2), Mathf.RoundToInt(grid.GetHeight() / 2)).x, grid.GetWorldPosition(Mathf.RoundToInt(grid.GetWidth() / 2), Mathf.RoundToInt(grid.GetHeight() / 2)).y + grid.GetCellSize() / 2);
+        // box.offset = new Vector2(grid.GetWorldPosition(Mathf.RoundToInt(grid.GetWidth() / 2), Mathf.RoundToInt(grid.GetHeight() / 2)).x, grid.GetWorldPosition(Mathf.RoundToInt(grid.GetWidth() / 2), Mathf.RoundToInt(grid.GetHeight() / 2)).y + grid.GetCellSize() / 2);
         mesh.vertices = vertices;
         mesh.uv = uv;
         mesh.triangles = triangles;

@@ -8,16 +8,17 @@ public class Tilemap
 
     public event EventHandler OnLoaded;
 
-    public Grid<Tile> grid;
+    public Grid<GameTile> grid;
 
     public Tilemap(int width, int height, float cellSize, Vector3 originPosition)
     {
-        grid = new Grid<Tile>(width, height, cellSize, originPosition, (Grid<Tile> g, int x, int y) => new Tile(g, x, y));
+        grid = new Grid<GameTile>(width, height, cellSize, originPosition, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y));
+        new Pathfinding(grid);
     }
 
-    public void SetTilemapSprite(Vector3 worldPosition, Tile.Sprite tilemapSprite)
+    public void SetTilemapSprite(Vector3 worldPosition, GameTile.Sprite tilemapSprite)
     {
-        Tile tilemapObject = grid.GetCellObject(worldPosition);
+        GameTile tilemapObject = grid.GetCellObject(worldPosition);
         if (tilemapObject != null)
         {
             tilemapObject.SetTileSprite(tilemapSprite);
@@ -36,17 +37,17 @@ public class Tilemap
      * */
     public class SaveObject
     {
-        public Tile.SaveObject[] tileSaveObjects;
+        public GameTile.SaveObject[] tileSaveObjects;
     }
 
     public void Save()
     {
-        List<Tile.SaveObject> tileSaveObjects = new List<Tile.SaveObject>();
+        List<GameTile.SaveObject> tileSaveObjects = new List<GameTile.SaveObject>();
         for (int x = 0; x < grid.GetWidth(); x++)
         {
             for (int y = 0; y < grid.GetHeight(); y++)
             {
-                Tile tilemapObject = grid.GetCellObject(x, y);
+                GameTile tilemapObject = grid.GetCellObject(x, y);
                 tileSaveObjects.Add(tilemapObject.Save());
             }
         }
@@ -59,9 +60,9 @@ public class Tilemap
     public void Load()
     {
         SaveObject saveObject = SaveSystem.LoadMostRecentObject<SaveObject>();
-        foreach (Tile.SaveObject tileSaveObject in saveObject.tileSaveObjects)
+        foreach (GameTile.SaveObject tileSaveObject in saveObject.tileSaveObjects)
         {
-            Tile tilemapObject = grid.GetCellObject(tileSaveObject.x, tileSaveObject.y);
+            GameTile tilemapObject = grid.GetCellObject(tileSaveObject.x, tileSaveObject.y);
             tilemapObject.Load(tileSaveObject);
         }
         OnLoaded?.Invoke(this, EventArgs.Empty);
@@ -72,71 +73,71 @@ public class Tilemap
     /*
      * Represents a single Tilemap Object that exists in each Grid Cell Position
      * */
-    public class Tile
-    {
-        public enum Sprite
-        {
-            None,
-            Ground,
-            Path,
-            Grass,
-            Background,
-        }
+    // public class GameTile
+    // {
+    //     public enum Sprite
+    //     {
+    //         None,
+    //         Ground,
+    //         Path,
+    //         Grass,
+    //         Background,
+    //     }
 
-        private Grid<Tile> grid;
-        private int x;
-        private int y;
-        private Sprite sprite;
+    //     private Grid<GameTile> grid;
+    //     private int x;
+    //     private int y;
+    //     private Sprite sprite;
 
-        public Tile(Grid<Tile> grid, int x, int y)
-        {
-            this.grid = grid;
-            this.x = x;
-            this.y = y;
-        }
+    //     public GameTile(Grid<GameTile> grid, int x, int y)
+    //     {
+    //         this.grid = grid;
+    //         this.x = x;
+    //         this.y = y;
+    //     }
 
-        public void SetTileSprite(Sprite tilemapSprite)
-        {
-            this.sprite = tilemapSprite;
-            grid.TriggerCellObjectChanged(x, y);
-        }
+    // public void SetTileSprite(Sprite tilemapSprite)
+    // {
+    //     this.sprite = tilemapSprite;
+    //     grid.TriggerCellObjectChanged(x, y);
+    // }
 
-        public Sprite GetTilemapSprite()
-        {
-            return sprite;
-        }
+    //     public Sprite GetTilemapSprite()
+    //     {
+    //         return sprite;
+    //     }
 
-        public override string ToString()
-        {
-            return sprite.ToString();
-        }
+    //     public override string ToString()
+    //     {
+    //         return sprite.ToString();
+    //     }
 
 
 
-        [System.Serializable]
-        public class SaveObject
-        {
-            public Sprite tilemapSprite;
-            public int x;
-            public int y;
-        }
+    //     [System.Serializable]
+    //     public class SaveObject
+    //     {
+    //         public Sprite tilemapSprite;
+    //         public int x;
+    //         public int y;
+    //     }
 
-        /*
-         * Save - Load
-         * */
-        public SaveObject Save()
-        {
-            return new SaveObject
-            {
-                tilemapSprite = sprite,
-                x = x,
-                y = y,
-            };
-        }
+    //     /*
+    //      * Save - Load
+    //      * */
+    //     public SaveObject Save()
+    //     {
+    //         return new SaveObject
+    //         {
+    //             tilemapSprite = sprite,
+    //             x = x,
+    //             y = y,
+    //         };
+    //     }
 
-        public void Load(SaveObject saveObject)
-        {
-            sprite = saveObject.tilemapSprite;
-        }
-    }
+    //     public void Load(SaveObject saveObject)
+    //     {
+    //         sprite = saveObject.tilemapSprite;
+    //     }
+    // }
 }

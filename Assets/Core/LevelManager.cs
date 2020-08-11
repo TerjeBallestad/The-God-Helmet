@@ -14,13 +14,13 @@ public class LevelManager : MonoBehaviour
     public int floors = 5;
     public int width = 20;
     public int distanceBetweenFloors = 10;
-    private Grid<LevelTile> gameLogic;
-    private Pathfinding pathfinding;
+    private Grid<GameTile> gameLogic;
+    private Tilemap tilemap;
     private List<TilemapVisual> sprites;
 
     private void Start()
     {
-        CreatePathfinding();
+        CreateTilemap();
         SpawnFloors();
     }
 
@@ -49,17 +49,17 @@ public class LevelManager : MonoBehaviour
     private void SpawnFloor(FloorLean lean, int index)
     {
         float rotation = 0;
-        float xPosition = 0;
+        int xPosition = 0;
 
         switch (lean)
         {
             case FloorLean.Left:
                 rotation = 2f;
-                xPosition = 1f;
+                xPosition = 2;
                 break;
             case FloorLean.Right:
                 rotation = -2f;
-                xPosition = -1f;
+                xPosition = 0;
                 break;
             case FloorLean.Straight:
                 rotation = 0;
@@ -68,35 +68,23 @@ public class LevelManager : MonoBehaviour
             default:
                 break;
         }
-        Tilemap tilemap = new Tilemap(width, 1, 1f, new Vector3(xPosition, index * distanceBetweenFloors));
-        TilemapVisual visual = Instantiate(tilemapVisual);
-        tilemap.SetTilemapVisual(visual);
-        visual.transform.RotateAround(visual.GetComponent<BoxCollider2D>().bounds.center, Vector3.forward, rotation);
+        // Tilemap tilemap = new Tilemap(width, 1, 1f, new Vector3(xPosition, index * distanceBetweenFloors));
+        // visual.transform.RotateAround(visual.GetComponent<BoxCollider2D>().bounds.center, Vector3.forward, rotation);
         // visual.transform.Translate(xPosition, 0, 0, Space.World);
         bool topFloor = index == floors;
-        for (int x = 0; x < tilemap.grid.GetWidth(); x++)
+        for (int x = xPosition; x < width + xPosition; x++)
         {
-            for (int y = 0; y < tilemap.grid.GetHeight(); y++)
-            {
-                pathfinding.GetGrid().GetCellObject(x, index * distanceBetweenFloors + 1).SetIsWalkable(true);
-                Tilemap.Tile tile = tilemap.grid.GetCellObject(x, y);
-                if (topFloor) tile.SetTileSprite(Tilemap.Tile.Sprite.Grass);
-                else tile.SetTileSprite(Tilemap.Tile.Sprite.Path);
-
-            }
+            GameTile tile = tilemap.grid.GetCellObject(x, index * distanceBetweenFloors);
+            tile.SetIsWalkable(true);
+            if (topFloor) tile.SetTileSprite(GameTile.Sprite.Grass);
+            else tile.SetTileSprite(GameTile.Sprite.Path);
         }
-        sprites.Add(visual);
+        // sprites.Add(visual);
     }
-    private void CreatePathfinding()
+    private void CreateTilemap()
     {
-        pathfinding = new Pathfinding(width, floors * distanceBetweenFloors);
-        // for (int x = 0; x < width; x++)
-        // {
-        //     for (int y = 0; y < floors * distanceBetweenFloors; y += distanceBetweenFloors)
-        //     {
-
-        //         pathfinding.GetNode(Mathf.Clamp(x, 1, width - 2), y).SetIsWalkable(false);
-        //     }
-        // }
+        tilemap = new Tilemap(width + 2, floors * distanceBetweenFloors + 3, 1f, Vector3.zero);
+        // TilemapVisual visual = Instantiate(tilemapVisual);
+        tilemap.SetTilemapVisual(tilemapVisual);
     }
 }

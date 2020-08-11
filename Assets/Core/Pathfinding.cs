@@ -7,15 +7,16 @@ public class Pathfinding
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
     public static Pathfinding Instance { get; private set; }
-    private Grid<PathNode> grid;
-    private List<PathNode> openList;
-    private List<PathNode> closedList;
-    public Pathfinding(int width, int height)
+    private Grid<GameTile> grid;
+    private List<GameTile> openList;
+    private List<GameTile> closedList;
+    public Pathfinding(Grid<GameTile> grid)
     {
         Instance = this;
-        grid = new Grid<PathNode>(width, height, 1f, Vector3.zero, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+        this.grid = grid;
+        Debug.Log(Instance);
     }
-    public Grid<PathNode> GetGrid()
+    public Grid<GameTile> GetGrid()
     {
         return grid;
     }
@@ -24,7 +25,7 @@ public class Pathfinding
         grid.GetCell(startWorldPosition, out int startX, out int startY);
         grid.GetCell(endWorldPosition, out int endX, out int endY);
 
-        List<PathNode> path = FindPath(startX, startY, endX, endY);
+        List<GameTile> path = FindPath(startX, startY, endX, endY);
         if (path == null)
         {
             return null;
@@ -32,26 +33,26 @@ public class Pathfinding
         else
         {
             List<Vector3> vectorPath = new List<Vector3>();
-            foreach (PathNode node in path)
+            foreach (GameTile node in path)
             {
                 vectorPath.Add(new Vector3(node.x, node.y) * grid.GetCellSize() + Vector3.one * grid.GetCellSize() * .5f);
             }
             return vectorPath;
         }
     }
-    public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
+    public List<GameTile> FindPath(int startX, int startY, int endX, int endY)
     {
-        PathNode startNode = grid.GetCellObject(startX, startY);
-        PathNode endNode = grid.GetCellObject(endX, endY);
+        GameTile startNode = grid.GetCellObject(startX, startY);
+        GameTile endNode = grid.GetCellObject(endX, endY);
 
-        openList = new List<PathNode> { startNode };
-        closedList = new List<PathNode>();
+        openList = new List<GameTile> { startNode };
+        closedList = new List<GameTile>();
 
         for (int x = 0; x < grid.GetWidth(); x++)
         {
             for (int y = 0; y < grid.GetHeight(); y++)
             {
-                PathNode pathNode = grid.GetCellObject(x, y);
+                GameTile pathNode = grid.GetCellObject(x, y);
                 pathNode.gCost = int.MaxValue;
                 pathNode.CalculateFCost();
                 pathNode.previousNode = null;
@@ -64,7 +65,7 @@ public class Pathfinding
 
         while (openList.Count > 0)
         {
-            PathNode currentNode = GetLowestFCostNode(openList);
+            GameTile currentNode = GetLowestFCostNode(openList);
             if (currentNode == endNode)
             {
                 //Reached final node
@@ -73,7 +74,7 @@ public class Pathfinding
             openList.Remove(currentNode);
             closedList.Add(currentNode);
 
-            foreach (PathNode neighbourNode in GetNeighbourNodes(currentNode))
+            foreach (GameTile neighbourNode in GetNeighbourNodes(currentNode))
             {
                 if (closedList.Contains(neighbourNode)) continue;
                 if (!neighbourNode.walkable)
@@ -101,11 +102,11 @@ public class Pathfinding
         return null;
     }
 
-    private List<PathNode> CalculatePath(PathNode endNode)
+    private List<GameTile> CalculatePath(GameTile endNode)
     {
-        List<PathNode> path = new List<PathNode>();
+        List<GameTile> path = new List<GameTile>();
         path.Add(endNode);
-        PathNode currentNode = endNode;
+        GameTile currentNode = endNode;
         while (currentNode.previousNode != null)
         {
             path.Add(currentNode.previousNode);
@@ -115,7 +116,7 @@ public class Pathfinding
         return path;
     }
 
-    private int CalculateDistanceCost(PathNode a, PathNode b)
+    private int CalculateDistanceCost(GameTile a, GameTile b)
     {
         int xDistance = Mathf.Abs(a.x - b.x);
         int yDistance = Mathf.Abs(a.y - b.y);
@@ -123,9 +124,9 @@ public class Pathfinding
         return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
     }
 
-    private PathNode GetLowestFCostNode(List<PathNode> nodes)
+    private GameTile GetLowestFCostNode(List<GameTile> nodes)
     {
-        PathNode lowestCostNode = nodes[0];
+        GameTile lowestCostNode = nodes[0];
         for (int i = 1; i < nodes.Count; i++)
         {
             if (nodes[i].fCost < lowestCostNode.fCost)
@@ -135,9 +136,9 @@ public class Pathfinding
         }
         return lowestCostNode;
     }
-    private List<PathNode> GetNeighbourNodes(PathNode currentNode)
+    private List<GameTile> GetNeighbourNodes(GameTile currentNode)
     {
-        List<PathNode> neighbours = new List<PathNode>();
+        List<GameTile> neighbours = new List<GameTile>();
 
         if (currentNode.x - 1 >= 0)
         {
@@ -165,44 +166,8 @@ public class Pathfinding
 
         return neighbours;
     }
-    public PathNode GetNode(int x, int y)
+    public GameTile GetNode(int x, int y)
     {
         return grid.GetCellObject(x, y);
     }
-}
-
-public class PathNode
-{
-    public bool walkable;
-    private Grid<PathNode> grid;
-    public int x;
-    public int y;
-    public int gCost;
-    public int fCost;
-    public int hCost;
-    public PathNode previousNode;
-
-    public PathNode(Grid<PathNode> grid, int x, int y)
-    {
-        this.grid = grid;
-        this.x = x;
-        this.y = y;
-        walkable = false;
-    }
-
-    public void CalculateFCost()
-    {
-        fCost = gCost + hCost;
-    }
-    public void SetIsWalkable(bool isWalkable)
-    {
-        this.walkable = isWalkable;
-        grid.TriggerCellObjectChanged(x, y);
-    }
-
-    public override string ToString()
-    {
-        return walkable.ToString();
-    }
-
 }

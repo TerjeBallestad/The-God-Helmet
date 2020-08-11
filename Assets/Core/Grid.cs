@@ -38,7 +38,7 @@ public class Grid<TCell>
             }
         }
 
-        bool showDebug = true;
+        bool showDebug = false;
 
         if (showDebug)
         {

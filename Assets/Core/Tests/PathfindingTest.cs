@@ -10,7 +10,7 @@ public class PathfindingTest : MonoBehaviour
 
     void Start()
     {
-        pathfinding = new Pathfinding(100, 100);
+        // pathfinding = new Pathfinding(100, 100);
     }
 
     private void Update()
@@ -19,7 +19,7 @@ public class PathfindingTest : MonoBehaviour
         {
             Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
             pathfinding.GetGrid().GetCell(mouseWorldPosition, out int x, out int y);
-            List<PathNode> path = pathfinding.FindPath(0, 0, x, y);
+            List<GameTile> path = pathfinding.FindPath(0, 0, x, y);
             if (path != null)
             {
                 for (int i = 1; i < path.Count - 1; i++)

@@ -9,7 +9,7 @@ public class TilemapTest : MonoBehaviour
 
     [SerializeField] private TilemapVisual tilemapVisual;
     private Tilemap tilemap;
-    private Tilemap.Tile.Sprite tilemapSprite;
+    private GameTile.Sprite tilemapSprite;
 
     private void Start()
     {
@@ -28,27 +28,27 @@ public class TilemapTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            tilemapSprite = Tilemap.Tile.Sprite.None;
+            tilemapSprite = GameTile.Sprite.None;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            tilemapSprite = Tilemap.Tile.Sprite.Ground;
+            tilemapSprite = GameTile.Sprite.Ground;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
-            tilemapSprite = Tilemap.Tile.Sprite.Path;
+            tilemapSprite = GameTile.Sprite.Path;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            tilemapSprite = Tilemap.Tile.Sprite.Grass;
+            tilemapSprite = GameTile.Sprite.Grass;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-            tilemapSprite = Tilemap.Tile.Sprite.Background;
+            tilemapSprite = GameTile.Sprite.Background;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
 
