@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hand
+public class Hand : MonoBehaviour
 {
     private Queue<Card> cards;
-
-    public void DrawCard(Card card)
+    public void PutInHand(Card card)
     {
         cards.Enqueue(card);
+        Debug.Log(card);
     }
-
 }

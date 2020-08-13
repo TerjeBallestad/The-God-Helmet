@@ -25,9 +25,8 @@ public class CardManager : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-
             GameObject card = Instantiate(cardPrefab);
-            card.GetComponent<Card>().SetData(deck.DrawCard());
+            hand.PutInHand(card.GetComponent<Card>());
         }
     }
 }
