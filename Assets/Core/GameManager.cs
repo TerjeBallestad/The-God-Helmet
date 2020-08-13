@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
-    // Start is called before the first frame update
-    void Start()
+    public static GameManager Instance { get; private set; }
+    public enum Turn
     {
+        Player,
+        Opponent,
+    }
+    public Turn turn;
+    public MinionBase selectedMinion;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+    private void Start()
+    {
+        turn = Turn.Player;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
