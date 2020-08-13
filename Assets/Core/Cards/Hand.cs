@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hand : MonoBehaviour
+public class Hand
 {
-    Queue<Card> cards;
+    private Queue<Card> cards;
+
+    public void DrawCard(Card card)
+    {
+        cards.Enqueue(card);
+    }
+
 }
