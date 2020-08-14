@@ -28,16 +28,29 @@ public class Card : MonoBehaviour
     private void Awake()
     {
         text = GetComponentInChildren<TextMeshPro>();
+
+    }
+    private void Start()
+    {
     }
 
     public void PlayCard()
     {
+        switch (data.type)
+        {
+            case Card.Type.SpawnMinion:
 
+
+            default:
+                Debug.Log("playing " + data.name.ToString());
+                break;
+        }
     }
     public void SetData(CardData data)
     {
         this.data = data;
         text.text = data.name;
+        gameObject.AddComponent<BoxCollider>();
     }
 
 }

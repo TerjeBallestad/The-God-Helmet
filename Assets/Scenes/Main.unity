@@ -505,6 +505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db1e364eadba49118a2d5f047fbdae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxInHand: 10
+  distanceBetweenCards: 1.6
 --- !u!4 &770247833
 Transform:
   m_ObjectHideFlags: 0
@@ -513,7 +515,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770247831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -892,7 +894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 4820423255868695230, guid: 3a8a5f1ef607a40b1bb8dbe0b8104589, type: 3}
-  hand: {fileID: 0}
+  hand: {fileID: 770247832}
   deck: {fileID: 665328814}
 --- !u!1 &2068686327
 GameObject:
