@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56212ad3d14f2424597cb49fd5d14614, type: 3}
   m_Name: Robert
   m_EditorClassIdentifier: 
-  Health: 4
+  Health: 3
   Actions: 1
-  Damage: 3
+  Damage: 6
   Steps: 5
   sprite: {fileID: 21300000, guid: 567c771dbf2f8455aa1c42c0d97adc0f, type: 3}
+  HPandDMGposition: {x: 0.145833, y: 1.208333, z: 0}

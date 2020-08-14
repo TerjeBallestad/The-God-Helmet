@@ -15,6 +15,6 @@ public class PlayerMovementKeys : MonoBehaviour
 
         Vector3 direction = new Vector3(x, y).normalized;
 
-        GetComponent<IMoveVelocity>().SetVelocity(direction);
+        GameManager.Instance.selectedMinion.GetComponent<IMoveVelocity>().SetVelocity(direction);
     }
 }

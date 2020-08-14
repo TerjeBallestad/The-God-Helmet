@@ -10,4 +10,5 @@ public class MinionData : ScriptableObject
     public int Damage;
     public int Steps;
     public Sprite sprite;
+    public Vector3 HPandDMGposition;
 }

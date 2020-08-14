@@ -39,18 +39,20 @@ public class Card : MonoBehaviour
         switch (data.type)
         {
             case Card.Type.SpawnMinion:
-
+                MinionManager.Instance.SpawnMinion(data.Minion);
+                break;
 
             default:
                 Debug.Log("playing " + data.name.ToString());
                 break;
         }
+
     }
     public void SetData(CardData data)
     {
         this.data = data;
         text.text = data.name;
-        gameObject.AddComponent<BoxCollider>();
+
     }
 
 }

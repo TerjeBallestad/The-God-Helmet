@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinionBase : MonoBehaviour
+public class Minion : MonoBehaviour
 {
     public MinionData data;
     private SpriteRenderer spriteRenderer;
@@ -11,5 +11,13 @@ public class MinionBase : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = data.sprite;
+        name = data.name;
+        HPandDMGUI HPUI = GetComponentInChildren<HPandDMGUI>();
+        HPUI.UpdateHPandDMG(data.Health, data.Damage);
+        HPUI.transform.localPosition = data.HPandDMGposition;
+    }
+    public void DisableInput()
+    {
+
     }
 }
