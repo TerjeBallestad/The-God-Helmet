@@ -28,7 +28,7 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
             Vector3 nextPathPosition = path[pathIndex];
             Vector3 direction = (nextPathPosition - transform.position).normalized;
             GetComponent<IMoveVelocity>().SetVelocity(direction);
-            float reachedTargetDistance = 0.5f;
+            float reachedTargetDistance = 0.1f;
             if (Vector3.Distance(transform.position, nextPathPosition) < reachedTargetDistance)
             {
                 pathIndex++;

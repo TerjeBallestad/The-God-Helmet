@@ -10,10 +10,9 @@ public class Tilemap
 
     public Grid<GameTile> grid;
 
-    public Tilemap(System.Random randomNumber, bool showDebug = true)
+    public Tilemap(System.Random randomNumber)
     {
-        grid = MapGenerator.Instance.GenerateMap(randomNumber, showDebug);
-        // grid = new Grid<GameTile>(width, height, originPosition, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y), showDebug);
+        grid = MapGenerator.Instance.GenerateMap(randomNumber);
         new Pathfinding(grid);
     }
 
@@ -30,8 +29,6 @@ public class Tilemap
     {
         tilemapVisual.SetGrid(this, grid);
     }
-
-
 
     /*
      * Save - Load
@@ -52,7 +49,6 @@ public class Tilemap
                 tileSaveObjects.Add(tilemapObject.Save());
             }
         }
-
         SaveObject saveObject = new SaveObject { tileSaveObjects = tileSaveObjects.ToArray() };
 
         SaveSystem.SaveObject(saveObject);

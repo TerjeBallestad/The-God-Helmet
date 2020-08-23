@@ -34,8 +34,9 @@ public class Pathfinding
             List<Vector3> vectorPath = new List<Vector3>();
             foreach (GameTile node in path)
             {
-                vectorPath.Add(grid.GetWorldPosition(node.x, node.y) + new Vector3(0.5f, 1));
+                vectorPath.Add(grid.GetWorldPosition(node.x, node.y) + new Vector3(0.5f, 0));
             }
+            vectorPath.RemoveAt(0);
             return vectorPath;
         }
     }
@@ -144,9 +145,9 @@ public class Pathfinding
             //left
             neighbours.Add(GetNode(currentNode.x - 1, currentNode.y));
             //left down
-            // if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x - 1, currentNode.y - 1));
+            if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x - 1, currentNode.y - 1));
             //left up
-            // if (currentNode.y + 1 < grid.GetHeight()) neighbours.Add(GetNode(currentNode.x - 1, currentNode.y + 1));
+            if (currentNode.y + 1 < grid.GetHeight()) neighbours.Add(GetNode(currentNode.x - 1, currentNode.y + 1));
 
         }
         if (currentNode.x + 1 < grid.GetWidth())
@@ -154,9 +155,9 @@ public class Pathfinding
             //right
             neighbours.Add(GetNode(currentNode.x + 1, currentNode.y));
             //right down
-            // if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x + 1, currentNode.y - 1));
+            if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x + 1, currentNode.y - 1));
             // right up
-            // if (currentNode.y + 1 < grid.GetHeight()) neighbours.Add(GetNode(currentNode.x + 1, currentNode.y + 1));
+            if (currentNode.y + 1 < grid.GetHeight()) neighbours.Add(GetNode(currentNode.x + 1, currentNode.y + 1));
         }
         //down
         if (currentNode.y - 1 >= 0) neighbours.Add(GetNode(currentNode.x, currentNode.y - 1));

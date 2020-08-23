@@ -12,17 +12,18 @@ public class MapGenerator : MonoBehaviour
     public int height;
     public int BorderSize = 5;
     public int Iterations = 1;
-
+    public bool showDebug;
     [Range(0, 100)]
     public int FillPercent = 50;
     int[,] map;
     Grid<GameTile> grid;
+    bool baseSpawned = false;
     private void Awake()
     {
         Instance = this;
     }
 
-    public Grid<GameTile> GenerateMap(System.Random randomNumber, bool showDebug = true)
+    public Grid<GameTile> GenerateMap(System.Random randomNumber)
     {
         Vector3 origin = new Vector3(-width * 0.5f - BorderSize, -height - BorderSize * 2);
         grid = new Grid<GameTile>(width + BorderSize * 2, height + BorderSize * 2, origin, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y), showDebug);
@@ -44,21 +45,42 @@ public class MapGenerator : MonoBehaviour
                 if (x >= BorderSize && x < width + BorderSize && y >= BorderSize && y < height + BorderSize)
                 {
                     borderedMap[x, y] = map[x - BorderSize, y - BorderSize];
-                    grid.GetCellObject(x, y).SetIsWalkable(map[x - BorderSize, y - BorderSize] != 0);
+                    if (borderedMap[x, y] == 0 && borderedMap[x, y - 1] == 1)
+                    {
+                        grid.GetCellObject(x, y).SetIsWalkable(true);
+                    }
+                    // grid.GetCellObject(x, y).SetIsWalkable(map[x - BorderSize, y - BorderSize] != 0);
+
                 }
                 else if (y == height + BorderSize)
                 {
                     borderedMap[x, y] = 0;
-                    grid.GetCellObject(x, y).SetIsWalkable(false);
+                    if (borderedMap[x, y - 1] == 1)
+                    {
+                        grid.GetCellObject(x, y).SetIsWalkable(true);
+                        if (
+                            !baseSpawned &&
+                            x > 3 &&
+                        grid.GetCellObject(x - 1, y).walkable == true &&
+                        grid.GetCellObject(x - 2, y).walkable == true &&
+                        grid.GetCellObject(x - 3, y).walkable == true)
+                        {
+                            MinionManager.Instance.SpawnBase(grid.GetWorldPosition(x - 3, y));
+                            baseSpawned = true;
+                        }
+                    }
                 }
                 else
                 {
                     borderedMap[x, y] = 1;
-                    grid.GetCellObject(x, y).SetIsWalkable(true);
+                    // grid.GetCellObject(x, y).SetIsWalkable(true);
                 }
             }
         }
-        MeshGenerator.Instance.GenerateMesh(borderedMap, 1);
+        MeshGenerator.Instance.GenerateMesh(borderedMap);
+
+        GeneratePolyCollider();
+
         return grid;
     }
 
@@ -122,5 +144,19 @@ public class MapGenerator : MonoBehaviour
             }
         }
         return wallCount;
+    }
+
+    void GeneratePolyCollider()
+    {
+        PolygonCollider2D poly = gameObject.AddComponent<PolygonCollider2D>();
+        Vector2[] path = new Vector2[4];
+        path[0] = new Vector2(grid.GetWorldPosition(0, 0).x + 0.5f, grid.GetWorldPosition(0, 0).y + 0.5f);
+        path[1] = new Vector2(grid.GetWorldPosition(0, grid.GetHeight()).x + 0.5f, grid.GetWorldPosition(0, grid.GetHeight()).y + 3);
+        path[2] = new Vector2(grid.GetWorldPosition(grid.GetWidth(), grid.GetHeight()).x - 0.5f, grid.GetWorldPosition(grid.GetWidth(), grid.GetHeight()).y + 3);
+        path[3] = new Vector2(grid.GetWorldPosition(grid.GetWidth(), 0).x - 0.5f, grid.GetWorldPosition(grid.GetWidth(), 0).y + 0.5f);
+
+        poly.SetPath(0, path);
+
+        GameManager.Instance.cameraConfiner = poly;
     }
 }

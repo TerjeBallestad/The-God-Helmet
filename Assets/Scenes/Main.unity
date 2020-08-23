@@ -218,11 +218,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 160
   height: 80
-  seed: 
-  randomSeed: 1
   BorderSize: 1
-  Iterations: 8
-  FillPercent: 81
+  Iterations: 6
+  showDebug: 1
+  FillPercent: 79
 --- !u!4 &45624722
 Transform:
   m_ObjectHideFlags: 0
@@ -669,6 +668,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turn: 0
   selectedMinion: {fileID: 0}
+  cameraConfiner: {fileID: 0}
 --- !u!4 &1048616494
 Transform:
   m_ObjectHideFlags: 0
@@ -949,9 +949,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapVisual: {fileID: 1259182199}
-  showDebugGrid: 0
   seed: 
-  randomSeed: 0
+  randomSeed: 1
 --- !u!4 &1397317320
 Transform:
   m_ObjectHideFlags: 0

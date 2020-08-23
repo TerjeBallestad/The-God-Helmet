@@ -15,7 +15,6 @@ public class Grid<TCell>
 
     private int columns;
     private int rows;
-    // private float cellSize;
     private Vector3 origin;
     private TCell[,] grid;
     private TextMesh[,] debugText;
@@ -25,7 +24,6 @@ public class Grid<TCell>
         this.columns = width;
         this.rows = height;
         this.origin = origin;
-        // this.cellSize = cellSize;
 
         grid = new TCell[width, height];
         debugText = new TextMesh[width, height];
@@ -45,6 +43,7 @@ public class Grid<TCell>
                 for (int y = 0; y < grid.GetLength(1); y++)
                 {
                     debugText[x, y] = UtilsClass.CreateWorldText(grid[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(1, 1) * .5f, 40, Color.white, TextAnchor.MiddleCenter);
+                    debugText[x, y].transform.SetParent(LevelManager.Instance.transform);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
                 }

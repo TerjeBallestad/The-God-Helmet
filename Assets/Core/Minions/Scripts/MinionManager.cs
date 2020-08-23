@@ -12,19 +12,23 @@ public class MinionManager : MonoBehaviour
     private List<Minion> minions = new List<Minion>();
     private void Awake()
     {
-        GameObject building = Instantiate(BasePrefab);
-        baseBuilding = building.GetComponent<BaseBuilding>();
-        building.transform.Translate(Vector3.down * 0.1f);
         Instance = this;
     }
-    private void Start()
+
+    public void SpawnBase(Vector3 position)
     {
+        GameObject building = Instantiate(BasePrefab, position, Quaternion.identity);
+        baseBuilding = building.GetComponent<BaseBuilding>();
+        building.transform.Translate(Vector3.down * 0.1f);
+        GameManager.Instance.SetCameraFollow(baseBuilding.transform);
     }
+
     public void SpawnMinion(MinionData data)
     {
         Minion minion = Instantiate(MinionPrefab).GetComponent<Minion>();
         minion.data = data;
         minion.gameObject.transform.position = baseBuilding.spawnPosition;
+        GameManager.Instance.SetSelectedMinion(minion);
         minions.Add(minion);
     }
 }

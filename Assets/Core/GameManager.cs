@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,23 +14,40 @@ public class GameManager : MonoBehaviour
     public Turn turn;
     public Minion selectedMinion;
     private bool followSet = false;
+    private Transform camFollow;
+    public PolygonCollider2D cameraConfiner;
+    private CinemachineVirtualCamera virtualCamera;
     private void Awake()
     {
         Instance = this;
+        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+
     }
     private void Start()
     {
         turn = Turn.Player;
+        camFollow = transform;
     }
-
-
+    public void SetSelectedMinion(Minion minion)
+    {
+        selectedMinion = minion;
+        SetCameraFollow(minion.transform);
+    }
+    public void SetCameraFollow(Transform transform)
+    {
+        camFollow = transform;
+        followSet = false;
+    }
     private void Update()
     {
         if (!followSet)
         {
             if (Camera.main.GetComponent<Cinemachine.CinemachineBrain>().ActiveVirtualCamera != null)
             {
-                Camera.main.GetComponent<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.Follow = MinionManager.Instance.baseBuilding.transform;
+                virtualCamera.Follow = camFollow;
+                CinemachineConfiner confiner = virtualCamera.GetComponent<CinemachineConfiner>();
+                confiner.InvalidatePathCache();
+                confiner.m_BoundingShape2D = cameraConfiner;
                 followSet = true;
             }
         }

@@ -8,7 +8,6 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance { get; private set; }
 
     [SerializeField] private TilemapVisual tilemapVisual;
-    public bool showDebugGrid = true;
     public string seed;
     public bool randomSeed = true;
     private Grid<GameTile> gameLogic;

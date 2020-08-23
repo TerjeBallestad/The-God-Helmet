@@ -18,14 +18,14 @@ public class MeshGenerator : MonoBehaviour
     {
         Instance = this;
     }
-    public void GenerateMesh(int[,] map, float squareSize)
+    public void GenerateMesh(int[,] map)
     {
         triangleDictionary.Clear();
         outlines.Clear();
         checkedVertices.Clear();
 
 
-        squareGrid = new SquareGrid(map, squareSize);
+        squareGrid = new SquareGrid(map);
 
         vertices = new List<Vector3>();
         triangles = new List<int>();
@@ -47,8 +47,8 @@ public class MeshGenerator : MonoBehaviour
         Vector2[] uvs = new Vector2[vertices.Count];
         for (int i = 0; i < vertices.Count; i++)
         {
-            float percentX = Mathf.InverseLerp(-map.GetLength(0) * 0.5f * squareSize, map.GetLength(0) * 0.5f * squareSize, vertices[i].x) * map.GetLength(0);
-            float percentY = Mathf.InverseLerp(-map.GetLength(0) * 0.5f * squareSize, map.GetLength(0) * 0.5f * squareSize, vertices[i].y) * map.GetLength(1);
+            float percentX = Mathf.InverseLerp(-map.GetLength(0) * 0.5f, map.GetLength(0) * 0.5f, vertices[i].x) * map.GetLength(0);
+            float percentY = Mathf.InverseLerp(-map.GetLength(0) * 0.5f, map.GetLength(0) * 0.5f, vertices[i].y) * map.GetLength(1);
             uvs[i] = new Vector2(percentX, percentY);
         }
         mesh.uv = uvs;
@@ -308,12 +308,12 @@ public class MeshGenerator : MonoBehaviour
     public class SquareGrid
     {
         public Square[,] squares;
-        public SquareGrid(int[,] map, float squareSize)
+        public SquareGrid(int[,] map)
         {
             int nodeCountX = map.GetLength(0);
             int nodeCountY = map.GetLength(1);
-            float mapWidth = nodeCountX * squareSize;
-            float mapHeight = nodeCountY * squareSize;
+            float mapWidth = nodeCountX;
+            float mapHeight = nodeCountY;
 
             ControlNode[,] controlNodes = new ControlNode[nodeCountX, nodeCountY];
 
@@ -321,8 +321,8 @@ public class MeshGenerator : MonoBehaviour
             {
                 for (int y = 0; y < nodeCountY; y++)
                 {
-                    Vector3 position = new Vector3(-mapWidth * 0.5f + x + (squareSize * 0.5f), -mapHeight + y + (squareSize * 0.5f));
-                    controlNodes[x, y] = new ControlNode(position, map[x, y] == 1, squareSize);
+                    Vector3 position = new Vector3(-mapWidth * 0.5f + x + 0.5f, -mapHeight + y + 0.5f);
+                    controlNodes[x, y] = new ControlNode(position, map[x, y] == 1);
                 }
             }
             squares = new Square[nodeCountX - 1, nodeCountY - 1];
@@ -372,11 +372,11 @@ public class MeshGenerator : MonoBehaviour
     {
         public bool active;
         public Node above, right;
-        public ControlNode(Vector3 position, bool active, float size) : base(position)
+        public ControlNode(Vector3 position, bool active) : base(position)
         {
             this.active = active;
-            above = new Node(position + Vector3.up * size * .5f);
-            right = new Node(position + Vector3.right * size * .5f);
+            above = new Node(position + Vector3.up * .5f);
+            right = new Node(position + Vector3.right * .5f);
         }
     }
 }
