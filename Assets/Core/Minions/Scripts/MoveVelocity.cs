@@ -7,10 +7,10 @@ public class MoveVelocity : MonoBehaviour, IMoveVelocity
 {
     [SerializeField] private float speed = 4;
     private Vector3 direction;
-    private Rigidbody rb;
+    private Rigidbody2D rb;
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
     }
     public void SetVelocity(Vector3 direction)
     {

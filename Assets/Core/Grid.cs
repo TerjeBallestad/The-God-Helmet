@@ -15,17 +15,17 @@ public class Grid<TCell>
 
     private int columns;
     private int rows;
-    private float cellSize;
+    // private float cellSize;
     private Vector3 origin;
     private TCell[,] grid;
     private TextMesh[,] debugText;
 
-    public Grid(int width, int height, float cellSize, Vector3 origin, Func<Grid<TCell>, int, int, TCell> createCellObject, bool showDebug = false)
+    public Grid(int width, int height, Vector3 origin, Func<Grid<TCell>, int, int, TCell> createCellObject, bool showDebug = false)
     {
         this.columns = width;
         this.rows = height;
         this.origin = origin;
-        this.cellSize = cellSize;
+        // this.cellSize = cellSize;
 
         grid = new TCell[width, height];
         debugText = new TextMesh[width, height];
@@ -44,7 +44,7 @@ public class Grid<TCell>
             {
                 for (int y = 0; y < grid.GetLength(1); y++)
                 {
-                    debugText[x, y] = UtilsClass.CreateWorldText(grid[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 40, Color.white, TextAnchor.MiddleCenter);
+                    debugText[x, y] = UtilsClass.CreateWorldText(grid[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(1, 1) * .5f, 40, Color.white, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
                 }
@@ -61,13 +61,13 @@ public class Grid<TCell>
 
     public Vector3 GetWorldPosition(int x, int y)
     {
-        return new Vector3(x, y) * cellSize + origin;
+        return new Vector3(x, y) + origin;
     }
 
     public void GetCell(Vector3 worldPosition, out int x, out int y)
     {
-        x = Mathf.FloorToInt((worldPosition - origin).x / cellSize);
-        y = Mathf.FloorToInt((worldPosition - origin).y / cellSize);
+        x = Mathf.FloorToInt((worldPosition - origin).x);
+        y = Mathf.FloorToInt((worldPosition - origin).y);
 
     }
 
@@ -79,10 +79,7 @@ public class Grid<TCell>
     {
         return rows;
     }
-    public float GetCellSize()
-    {
-        return cellSize;
-    }
+
 
     public void SetCellObject(int x, int y, TCell value)
     {

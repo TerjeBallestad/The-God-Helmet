@@ -6,7 +6,7 @@ using TMPro;
 public class Card : MonoBehaviour
 {
     private CardData data;
-    private TextMeshPro text;
+    private TextMeshProUGUI text;
     public enum Type
     {
         DirectDamage,
@@ -27,7 +27,7 @@ public class Card : MonoBehaviour
     }
     private void Awake()
     {
-        text = GetComponentInChildren<TextMeshPro>();
+        text = GetComponentInChildren<TextMeshProUGUI>();
 
     }
     private void Start()
@@ -46,6 +46,8 @@ public class Card : MonoBehaviour
                 Debug.Log("playing " + data.name.ToString());
                 break;
         }
+        CardManager.Instance.hand.RemoveCard(this);
+        Destroy(gameObject);
 
     }
     public void SetData(CardData data)

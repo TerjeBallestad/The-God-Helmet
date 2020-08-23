@@ -10,9 +10,10 @@ public class Tilemap
 
     public Grid<GameTile> grid;
 
-    public Tilemap(int width, int height, float cellSize, Vector3 originPosition, bool showDebug = true)
+    public Tilemap(System.Random randomNumber, bool showDebug = true)
     {
-        grid = new Grid<GameTile>(width, height, cellSize, originPosition, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y), showDebug);
+        grid = MapGenerator.Instance.GenerateMap(randomNumber, showDebug);
+        // grid = new Grid<GameTile>(width, height, originPosition, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y), showDebug);
         new Pathfinding(grid);
     }
 
@@ -67,77 +68,4 @@ public class Tilemap
         }
         OnLoaded?.Invoke(this, EventArgs.Empty);
     }
-
-
-
-    /*
-     * Represents a single Tilemap Object that exists in each Grid Cell Position
-     * */
-    // public class GameTile
-    // {
-    //     public enum Sprite
-    //     {
-    //         None,
-    //         Ground,
-    //         Path,
-    //         Grass,
-    //         Background,
-    //     }
-
-    //     private Grid<GameTile> grid;
-    //     private int x;
-    //     private int y;
-    //     private Sprite sprite;
-
-    //     public GameTile(Grid<GameTile> grid, int x, int y)
-    //     {
-    //         this.grid = grid;
-    //         this.x = x;
-    //         this.y = y;
-    //     }
-
-    // public void SetTileSprite(Sprite tilemapSprite)
-    // {
-    //     this.sprite = tilemapSprite;
-    //     grid.TriggerCellObjectChanged(x, y);
-    // }
-
-    //     public Sprite GetTilemapSprite()
-    //     {
-    //         return sprite;
-    //     }
-
-    //     public override string ToString()
-    //     {
-    //         return sprite.ToString();
-    //     }
-
-
-
-    //     [System.Serializable]
-    //     public class SaveObject
-    //     {
-    //         public Sprite tilemapSprite;
-    //         public int x;
-    //         public int y;
-    //     }
-
-    //     /*
-    //      * Save - Load
-    //      * */
-    //     public SaveObject Save()
-    //     {
-    //         return new SaveObject
-    //         {
-    //             tilemapSprite = sprite,
-    //             x = x,
-    //             y = y,
-    //         };
-    //     }
-
-    //     public void Load(SaveObject saveObject)
-    //     {
-    //         sprite = saveObject.tilemapSprite;
-    //     }
-    // }
 }

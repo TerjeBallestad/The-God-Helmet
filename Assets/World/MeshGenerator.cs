@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MeshGenerator : MonoBehaviour
 {
+    public static MeshGenerator Instance { get; private set; }
+
     public SquareGrid squareGrid;
     List<Vector3> vertices;
     List<int> triangles;
@@ -12,7 +14,10 @@ public class MeshGenerator : MonoBehaviour
     HashSet<int> checkedVertices = new HashSet<int>();
     List<GameObject> colliders;
 
-
+    private void Awake()
+    {
+        Instance = this;
+    }
     public void GenerateMesh(int[,] map, float squareSize)
     {
         triangleDictionary.Clear();
@@ -36,7 +41,18 @@ public class MeshGenerator : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
+
         mesh.RecalculateNormals();
+
+        Vector2[] uvs = new Vector2[vertices.Count];
+        for (int i = 0; i < vertices.Count; i++)
+        {
+            float percentX = Mathf.InverseLerp(-map.GetLength(0) * 0.5f * squareSize, map.GetLength(0) * 0.5f * squareSize, vertices[i].x) * map.GetLength(0);
+            float percentY = Mathf.InverseLerp(-map.GetLength(0) * 0.5f * squareSize, map.GetLength(0) * 0.5f * squareSize, vertices[i].y) * map.GetLength(1);
+            uvs[i] = new Vector2(percentX, percentY);
+        }
+        mesh.uv = uvs;
+
         GenerateOutlineCollision();
     }
 
@@ -305,7 +321,7 @@ public class MeshGenerator : MonoBehaviour
             {
                 for (int y = 0; y < nodeCountY; y++)
                 {
-                    Vector3 position = new Vector3(-mapWidth * 0.5f + x + (squareSize * 0.5f), -mapHeight / 2 + y + (squareSize * 0.5f));
+                    Vector3 position = new Vector3(-mapWidth * 0.5f + x + (squareSize * 0.5f), -mapHeight + y + (squareSize * 0.5f));
                     controlNodes[x, y] = new ControlNode(position, map[x, y] == 1, squareSize);
                 }
             }

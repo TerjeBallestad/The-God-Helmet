@@ -1,44 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+
+
 
 public class MapGenerator : MonoBehaviour
 {
+    public static MapGenerator Instance { get; private set; }
+
     public int width;
     public int height;
-    public string seed;
-    public bool randomSeed;
     public int BorderSize = 5;
     public int Iterations = 1;
 
     [Range(0, 100)]
     public int FillPercent = 50;
     int[,] map;
-    MeshGenerator meshGenerator;
-    private void Start()
+    Grid<GameTile> grid;
+    private void Awake()
     {
-        meshGenerator = GetComponent<MeshGenerator>();
-        GenerateMap();
+        Instance = this;
     }
 
-    private void Update()
+    public Grid<GameTile> GenerateMap(System.Random randomNumber, bool showDebug = true)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            GenerateMap();
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            SmoothMap();
-        }
-    }
-
-    void GenerateMap()
-    {
+        Vector3 origin = new Vector3(-width * 0.5f - BorderSize, -height - BorderSize * 2);
+        grid = new Grid<GameTile>(width + BorderSize * 2, height + BorderSize * 2, origin, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y), showDebug);
         map = new int[width, height];
 
-        RandomFillMap();
+        RandomFillMap(randomNumber);
 
         for (int i = 0; i < Iterations; i++)
         {
@@ -54,26 +44,26 @@ public class MapGenerator : MonoBehaviour
                 if (x >= BorderSize && x < width + BorderSize && y >= BorderSize && y < height + BorderSize)
                 {
                     borderedMap[x, y] = map[x - BorderSize, y - BorderSize];
+                    grid.GetCellObject(x, y).SetIsWalkable(map[x - BorderSize, y - BorderSize] != 0);
+                }
+                else if (y == height + BorderSize)
+                {
+                    borderedMap[x, y] = 0;
+                    grid.GetCellObject(x, y).SetIsWalkable(false);
                 }
                 else
                 {
                     borderedMap[x, y] = 1;
+                    grid.GetCellObject(x, y).SetIsWalkable(true);
                 }
             }
         }
-
-        meshGenerator.GenerateMesh(borderedMap, 1);
+        MeshGenerator.Instance.GenerateMesh(borderedMap, 1);
+        return grid;
     }
 
-    void RandomFillMap()
+    void RandomFillMap(System.Random randomNumber)
     {
-        if (randomSeed)
-        {
-            seed = DateTime.Now.Ticks.ToString();
-        }
-
-        System.Random randomNumber = new System.Random(seed.GetHashCode());
-
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -89,6 +79,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
+
     int[,] SmoothMap()
     {
         int[,] tempMap = new int[width, height];

@@ -13,7 +13,7 @@ public class TilemapTest : MonoBehaviour
 
     private void Start()
     {
-        tilemap = new Tilemap(20, 10, 1f, Vector3.zero);
+        // tilemap = new Tilemap(20, 10, Vector3.zero);
 
         tilemap.SetTilemapVisual(tilemapVisual);
     }

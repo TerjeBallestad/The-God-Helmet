@@ -34,7 +34,7 @@ public class Pathfinding
             List<Vector3> vectorPath = new List<Vector3>();
             foreach (GameTile node in path)
             {
-                vectorPath.Add(new Vector3(node.x + (grid.GetCellSize() * 0.5f), node.y + grid.GetCellSize() * 0.85f));
+                vectorPath.Add(grid.GetWorldPosition(node.x, node.y) + new Vector3(0.5f, 1));
             }
             return vectorPath;
         }

@@ -10,6 +10,7 @@ public class GameTile
     }
     private Sprite sprite;
     public bool walkable;
+    public bool mesh;
     private Grid<GameTile> grid;
     public int x;
     public int y;
@@ -39,7 +40,7 @@ public class GameTile
 
     public override string ToString()
     {
-        return walkable.ToString();
+        return System.Convert.ToInt32(walkable).ToString();
     }
 
     public Sprite GetTilemapSprite()

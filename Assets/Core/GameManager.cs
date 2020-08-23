@@ -35,18 +35,12 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit hit;
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            if (hit)
             {
-                Card card = hit.transform.GetComponent<Card>();
                 Minion minion = hit.transform.GetComponent<Minion>();
-                if (card)
-                {
-                    card.PlayCard();
-                    CardManager.Instance.hand.RemoveCard(card);
-                    Destroy(card.gameObject);
-                }
+
                 if (minion)
                 {
                     selectedMinion = minion;

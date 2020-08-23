@@ -95,7 +95,7 @@ public class TilemapVisual : MonoBehaviour
             for (int y = 0; y < grid.GetHeight(); y++)
             {
                 int index = x * grid.GetHeight() + y;
-                Vector3 quadSize = new Vector3(1, 1) * grid.GetCellSize();
+                Vector3 quadSize = new Vector3(1, 1);
 
                 GameTile gridObject = grid.GetCellObject(x, y);
                 GameTile.Sprite tilemapSprite = gridObject.GetTilemapSprite();
