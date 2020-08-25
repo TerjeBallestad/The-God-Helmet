@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Robert
   m_EditorClassIdentifier: 
   Damage: 0
+  RopeLength: 0
   Minion: {fileID: 11400000, guid: a5c8487e41ad24654aed871f44436722, type: 2}
-  type: 7
+  type: 0

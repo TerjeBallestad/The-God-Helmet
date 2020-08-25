@@ -15,7 +15,7 @@ public class MapGenerator : MonoBehaviour
     public bool showDebug;
     [Range(0, 100)]
     public int FillPercent = 50;
-    int[,] map;
+    public int[,] map;
     Grid<GameTile> grid;
     bool baseSpawned = false;
     private void Awake()
@@ -78,6 +78,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
         MeshGenerator.Instance.GenerateMesh(borderedMap);
+        map = borderedMap;
 
         GeneratePolyCollider();
 

@@ -16,5 +16,6 @@ MonoBehaviour:
   Actions: 1
   Damage: 3
   Steps: 4
-  sprite: {fileID: 21300000, guid: 883c80c8b76b74e52a70385b938ead57, type: 3}
+  ColliderSize: {x: 0, y: 0}
+  Sprite: {fileID: 21300000, guid: 883c80c8b76b74e52a70385b938ead57, type: 3}
   HPandDMGposition: {x: 0.145833, y: 1.8125, z: 0}

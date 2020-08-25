@@ -28,6 +28,15 @@ public class GameManager : MonoBehaviour
         turn = Turn.Player;
         camFollow = transform;
     }
+    public void SetOpponentTurn()
+    {
+        turn = Turn.Opponent;
+        EnemyManager.Instance.ExecuteEvilPlans();
+    }
+    public void SetPlayerTurn()
+    {
+        turn = Turn.Player;
+    }
     public void SetSelectedMinion(Minion minion)
     {
         selectedMinion = minion;
@@ -50,6 +59,12 @@ public class GameManager : MonoBehaviour
                 confiner.m_BoundingShape2D = cameraConfiner;
                 followSet = true;
             }
+        }
+        if (turn == Turn.Opponent)
+        {
+
+
+            return;
         }
         if (Input.GetMouseButtonDown(0))
         {

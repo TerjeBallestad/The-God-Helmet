@@ -10,8 +10,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TilemapVisual tilemapVisual;
     public string seed;
     public bool randomSeed = true;
+    public Tilemap tilemap { get; private set; }
     private Grid<GameTile> gameLogic;
-    private Tilemap tilemap;
     private List<TilemapVisual> sprites;
 
     private void Awake()
@@ -26,6 +26,6 @@ public class LevelManager : MonoBehaviour
         }
         System.Random randomNumber = new System.Random(seed.GetHashCode());
         tilemap = new Tilemap(randomNumber);
-
     }
+
 }

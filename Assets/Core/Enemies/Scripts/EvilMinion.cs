@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Minion : MonoBehaviour
+public class EvilMinon : MonoBehaviour
 {
-    public MinionData data;
+    public EvilMinonData data;
     private SpriteRenderer spriteRenderer;
-
-    void Start()
+    private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = data.Sprite;
         name = data.name;
-        HPandDMGUI HPUI = GetComponentInChildren<HPandDMGUI>();
-        HPUI.UpdateHPandDMG(data.Health, data.Damage);
-        HPUI.transform.localPosition = data.HPandDMGposition;
     }
-
 }

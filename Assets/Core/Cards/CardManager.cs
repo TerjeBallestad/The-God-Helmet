@@ -24,12 +24,15 @@ public class CardManager : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            GameObject card = Instantiate(cardPrefab);
-            card.transform.SetParent(hand.transform);
-            Card cardComponent = card.GetComponent<Card>();
             CardData data = deck.DrawCard();
-            cardComponent.SetData(data);
-            hand.PutInHand(cardComponent);
+            if (data)
+            {
+                GameObject card = Instantiate(cardPrefab);
+                card.transform.SetParent(hand.transform);
+                Card cardComponent = card.GetComponent<Card>();
+                cardComponent.SetData(data);
+                hand.PutInHand(cardComponent);
+            }
         }
     }
 }

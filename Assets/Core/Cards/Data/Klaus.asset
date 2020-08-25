@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Klaus
   m_EditorClassIdentifier: 
   Damage: 0
+  RopeLength: 0
   Minion: {fileID: 11400000, guid: c5ea9808a87c44beea79cc89dd371101, type: 2}
-  type: 7
+  type: 0

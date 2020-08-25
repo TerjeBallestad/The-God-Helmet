@@ -7,6 +7,7 @@ using UnityEngine;
 public class CardData : ScriptableObject
 {
     public int Damage;
+    public int RopeLength;
     public MinionData Minion;
     public Card.Type type;
 }

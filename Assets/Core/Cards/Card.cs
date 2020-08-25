@@ -9,6 +9,8 @@ public class Card : MonoBehaviour
     private TextMeshProUGUI text;
     public enum Type
     {
+        SpawnMinion,
+        Rope,
         DirectDamage,
         HealMinion,
         DOT,
@@ -16,7 +18,6 @@ public class Card : MonoBehaviour
         WeaknessDebuff,
         ApplyBlock,
         ApplyArmor,
-        SpawnMinion,
         SpawnBase,
         IncreaseMinionHaste,
         IncreaseMinionActions,
@@ -40,6 +41,11 @@ public class Card : MonoBehaviour
         {
             case Card.Type.SpawnMinion:
                 MinionManager.Instance.SpawnMinion(data.Minion);
+                break;
+            case Card.Type.Rope:
+                Debug.Log(GameManager.Instance.selectedMinion.transform.position);
+                Debug.Log(LevelManager.Instance.tilemap.SpawnRope(GameManager.Instance.selectedMinion.transform.position, data.RopeLength));
+
                 break;
 
             default:

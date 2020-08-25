@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Tim
   m_EditorClassIdentifier: 
   Damage: 0
+  RopeLength: 0
   Minion: {fileID: 11400000, guid: 3989227b8b48e488e88b08427ba5f1d1, type: 2}
-  type: 7
+  type: 0

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 372b9da8f3694475b8948483e47b6e04, type: 3}
-  m_Name: Fireball
+  m_Name: Rope
   m_EditorClassIdentifier: 
-  Damage: 6
-  RopeLength: 0
+  Damage: 0
+  RopeLength: 4
   Minion: {fileID: 0}
-  type: 2
+  type: 1
