@@ -26,6 +26,19 @@ public class LevelManager : MonoBehaviour
         }
         System.Random randomNumber = new System.Random(seed.GetHashCode());
         tilemap = new Tilemap(randomNumber);
+        for (int x = 0; x < tilemap.grid.GetWidth(); x++)
+        {
+            for (int y = 0; y < tilemap.grid.GetHeight(); y++)
+            {
+                GameTile tile = tilemap.grid.GetCellObject(x, y);
+                if (tile.walkable)
+                {
+                    tilemap.walkableTiles.Add(tile);
+                }
+            }
+        }
+
+        EnemyManager.Instance.SpawnEvilMinons();
     }
 
 }

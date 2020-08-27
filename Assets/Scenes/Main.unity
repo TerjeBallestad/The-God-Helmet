@@ -220,7 +220,7 @@ MonoBehaviour:
   height: 80
   BorderSize: 1
   Iterations: 6
-  showDebug: 1
+  showDebug: 0
   FillPercent: 79
 --- !u!4 &45624722
 Transform:
@@ -331,6 +331,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632db9704e9924d6e95a393103a2d400, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  evilMinonPrefab: {fileID: 4717137590724206483, guid: 6bf1d6e1f0502423ab490d853a848e2a, type: 3}
+  minionsToSpawn:
+  - data: {fileID: 11400000, guid: 387c0fdd76cdc424e8fad8f9df244b5a, type: 2}
+    amount: 44
 --- !u!4 &391257264
 Transform:
   m_ObjectHideFlags: 0
@@ -458,6 +462,8 @@ GameObject:
   - component: {fileID: 549434361}
   - component: {fileID: 549434360}
   - component: {fileID: 549434366}
+  - component: {fileID: 549434364}
+  - component: {fileID: 549434365}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -550,6 +556,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &549434364
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549434359}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 20, y: 11.25}
+  m_EdgeRadius: 0
+--- !u!114 &549434365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549434359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f123d5e089ef43eabf260a22aa60a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &549434366
 MonoBehaviour:
   m_ObjectHideFlags: 0

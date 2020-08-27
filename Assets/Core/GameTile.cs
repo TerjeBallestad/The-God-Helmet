@@ -10,6 +10,7 @@ public class GameTile
     }
     private Sprite sprite;
     public bool walkable;
+    public bool occupied;
     public bool mesh;
     private Grid<GameTile> grid;
     public int x;
@@ -25,6 +26,7 @@ public class GameTile
         this.x = x;
         this.y = y;
         walkable = false;
+        occupied = false;
     }
 
 
@@ -32,10 +34,15 @@ public class GameTile
     {
         fCost = gCost + hCost;
     }
-    public void SetIsWalkable(bool isWalkable)
+    public void SetIsWalkable(bool walkable)
     {
-        this.walkable = isWalkable;
+        this.walkable = walkable;
         grid.TriggerCellObjectChanged(x, y);
+
+        if (LevelManager.Instance.tilemap != null)
+        {
+            LevelManager.Instance.tilemap.walkableTiles.Add(this);
+        }
     }
 
     public override string ToString()

@@ -8,9 +8,11 @@ public class Tilemap
     public event EventHandler OnLoaded;
     int[,] ground;
     public Grid<GameTile> grid;
+    public List<GameTile> walkableTiles;
 
     public Tilemap(System.Random randomNumber)
     {
+        walkableTiles = new List<GameTile>();
         grid = MapGenerator.Instance.GenerateMap(randomNumber);
         ground = MapGenerator.Instance.map;
         new Pathfinding(grid);
@@ -38,21 +40,22 @@ public class Tilemap
         if (!GameTileIsWalkable(x, y - 1) && y - 1 > 0 && ground[x, y - 1] == 0)
         {
             SpawnRope(x, y - 1, ropeLength);
+            return true;
         }
 
         // Check left
-        else if (!GameTileIsWalkable(x - 1, y) &&
-        !GameTileIsWalkable(x - 1, y - 1) &&
-        !GameTileIsWalkable(x - 1, y + 1))
+        if (!GameTileIsWalkable(x - 1, y) &&
+       !GameTileIsWalkable(x - 1, y - 1) &&
+       !GameTileIsWalkable(x - 1, y + 1))
         {
             Debug.Log("Found available spot at " + x + ", " + y);
             SpawnRope(x - 1, y - 1, ropeLength);
             return true;
         }
         //check right
-        else if (!GameTileIsWalkable(x + 1, y) &&
-        !GameTileIsWalkable(x + 1, y - 1) &&
-        !GameTileIsWalkable(x + 1, y + 1))
+        if (!GameTileIsWalkable(x + 1, y) &&
+       !GameTileIsWalkable(x + 1, y - 1) &&
+       !GameTileIsWalkable(x + 1, y + 1))
         {
             Debug.Log("Found available spot at " + x + ", " + y);
             SpawnRope(x + 1, y - 1, ropeLength);
@@ -61,12 +64,13 @@ public class Tilemap
         //check above
         for (int i = ropeLength; i > 0; i--)
         {
-            if (ground.GetLength(1) >= y + i && ground[x, y + i] == 0)
-            {
-                Debug.Log("Found spot up above, at " + x + ", " + y + ropeLength);
-                SpawnRope(x, y + i, ropeLength);
-                return true;
-            }
+            if (ground.GetLength(1) > y + i)
+                if (ground[x, y + i] == 0)
+                {
+                    Debug.Log("Found spot up above, at " + x + ", " + y + ropeLength);
+                    SpawnRope(x, y + i, ropeLength);
+                    return true;
+                }
         }
 
 
@@ -82,6 +86,23 @@ public class Tilemap
             if (grid.GetCellObject(x, y - i).walkable == false)
                 grid.GetCellObject(x, y - i).SetIsWalkable(true);
         }
+    }
+
+    public Vector3[] GetEnemyPositions(int amount)
+    {
+        Vector3[] positions = new Vector3[amount];
+        for (int i = 0; i < amount; i++)
+        {
+            GameTile tile = walkableTiles[UnityEngine.Random.Range(0, walkableTiles.Count)];
+
+            while (tile.occupied || tile.y == grid.GetHeight() - 1)
+            {
+                tile = walkableTiles[UnityEngine.Random.Range(0, walkableTiles.Count)];
+            }
+            positions[i] = grid.GetWorldPosition(tile.x, tile.y);
+            tile.occupied = true;
+        }
+        return positions;
     }
 
     public bool GameTileIsWalkable(int x, int y)
