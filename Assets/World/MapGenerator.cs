@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 
@@ -12,6 +13,7 @@ public class MapGenerator : MonoBehaviour
     public int height;
     public int BorderSize = 5;
     public int Iterations = 1;
+    public int RoomThreshold = 5;
     public bool showDebug;
     [Range(0, 100)]
     public int FillPercent = 50;
@@ -35,7 +37,7 @@ public class MapGenerator : MonoBehaviour
         {
             map = SmoothMap();
         }
-
+        ProcessMap();
         int[,] borderedMap = new int[width + BorderSize * 2, height + BorderSize * 2];
 
         for (int x = 0; x < borderedMap.GetLength(0); x++)
@@ -85,6 +87,88 @@ public class MapGenerator : MonoBehaviour
         return grid;
     }
 
+    public bool IsInMapRange(int x, int y)
+    {
+        return x >= 0 && x < width && y >= 0 && y < height;
+    }
+
+    void ProcessMap()
+    {
+        List<List<Coord>> roomRegions = GetRegions(0);
+        List<Room> roomsAboveThreshold = new List<Room>();
+        foreach (List<Coord> roomRegion in roomRegions)
+        {
+            if (roomRegion.Count < RoomThreshold)
+            {
+                foreach (Coord tile in roomRegion)
+                {
+                    map[tile.x, tile.y] = 1;
+                }
+            }
+            else roomsAboveThreshold.Add(new Room(roomRegion, map));
+        }
+        roomsAboveThreshold.Sort();
+        foreach (Room r in roomsAboveThreshold)
+        {
+            Debug.Log(r.roomSize);
+        }
+    }
+
+    List<List<Coord>> GetRegions(int tileType)
+    {
+        List<List<Coord>> regions = new List<List<Coord>>();
+        int[,] mapFlags = new int[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (mapFlags[x, y] == 0 && map[x, y] == tileType)
+                {
+                    List<Coord> newRegion = GetRegionTiles(x, y);
+                    regions.Add(newRegion);
+                    foreach (Coord tile in newRegion)
+                    {
+                        mapFlags[tile.x, tile.y] = 1;
+                    }
+                }
+            }
+        }
+        return regions;
+    }
+
+    List<Coord> GetRegionTiles(int startX, int startY)
+    {
+        List<Coord> tiles = new List<Coord>();
+        int[,] mapFlags = new int[width, height];
+        int tileType = map[startX, startY];
+
+        Queue<Coord> queue = new Queue<Coord>();
+        queue.Enqueue(new Coord(startX, startY));
+        mapFlags[startX, startY] = 1;
+        while (queue.Count > 0)
+        {
+            Coord tile = queue.Dequeue();
+            tiles.Add(tile);
+            for (int x = tile.x - 1; x <= tile.x + 1; x++)
+            {
+                for (int y = tile.y - 1; y <= tile.y + 1; y++)
+                {
+                    if (IsInMapRange(x, y) && (y == tile.y || x == tile.x))
+                    {
+                        if (mapFlags[x, y] == 0 && map[x, y] == tileType)
+                        {
+                            mapFlags[x, y] = 1;
+                            queue.Enqueue(new Coord(x, y));
+                        }
+                    }
+                }
+
+            }
+        }
+        return tiles;
+    }
+
     void RandomFillMap(System.Random randomNumber)
     {
         for (int x = 0; x < width; x++)
@@ -131,7 +215,7 @@ public class MapGenerator : MonoBehaviour
         {
             for (int neighbourY = y - 1; neighbourY <= y + 1; neighbourY++)
             {
-                if (neighbourX >= 0 && neighbourX < width && neighbourY >= 0 && neighbourY < height)
+                if (IsInMapRange(neighbourX, neighbourY))
                 {
                     if (neighbourX != x || neighbourY != y)
                     {
@@ -159,5 +243,56 @@ public class MapGenerator : MonoBehaviour
         poly.SetPath(0, path);
 
         GameManager.Instance.cameraConfiner = poly;
+    }
+    class Room : IComparable<Room>
+    {
+        public List<Coord> tiles;
+        public List<Coord> edgeTiles;
+        public int roomSize;
+        public Room()
+        {
+
+        }
+        public Room(List<Coord> tiles, int[,] map)
+        {
+            this.tiles = tiles;
+            roomSize = tiles.Count;
+
+            edgeTiles = new List<Coord>();
+            foreach (Coord tile in tiles)
+            {
+                for (int x = tile.x - 1; x <= tile.x + 1; x++)
+                {
+                    for (int y = tile.y - 1; y <= tile.y + 1; y++)
+                    {
+                        if (x == tile.x || y == tile.y)
+                        {
+                            if (x > 0 && x < map.GetLength(0) && y > 0 && y < map.GetLength(1))
+                            {
+                                if (map[x, y] == 1)
+                                {
+                                    edgeTiles.Add(tile);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public int CompareTo(Room other)
+        {
+            return other.roomSize.CompareTo(roomSize);
+        }
+    }
+
+    struct Coord
+    {
+        public int x;
+        public int y;
+        public Coord(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
