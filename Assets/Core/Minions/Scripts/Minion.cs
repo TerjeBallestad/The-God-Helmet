@@ -17,4 +17,5 @@ public class Minion : MonoBehaviour
         HPUI.transform.localPosition = data.HPandDMGposition;
     }
 
+
 }

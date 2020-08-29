@@ -220,6 +220,7 @@ MonoBehaviour:
   height: 80
   BorderSize: 1
   Iterations: 6
+  RoomThreshold: 6
   showDebug: 0
   FillPercent: 79
 --- !u!4 &45624722
@@ -464,6 +465,7 @@ GameObject:
   - component: {fileID: 549434366}
   - component: {fileID: 549434364}
   - component: {fileID: 549434365}
+  - component: {fileID: 549434367}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -478,7 +480,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549434359}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
@@ -628,6 +630,30 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &549434367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549434359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 958dbcc854ef14858b2f7570fe7a3efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showMain: 0
+  showSub: 1
+  gridSizeX: 160
+  gridSizeY: 81
+  gridSizeZ: 0
+  smallStep: 1
+  largeStep: 10
+  startX: -80
+  startY: -81
+  startZ: 0
+  mainColor: {r: 0, g: 1, b: 0, a: 1}
+  subColor: {r: 0.13333334, g: 0.1254902, b: 0.20392157, a: 1}
 --- !u!1 &665328812
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,18 +1009,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapSpriteUVArray:
-  - tilemapSprite: 2
+  - tileType: 2
     uv00Pixels: {x: 0, y: 432}
     uv11Pixels: {x: 48, y: 480}
-  - tilemapSprite: 1
+  - tileType: 1
     uv00Pixels: {x: 48, y: 432}
     uv11Pixels: {x: 96, y: 480}
-  - tilemapSprite: 3
+  - tileType: 3
     uv00Pixels: {x: 96, y: 432}
     uv11Pixels: {x: 144, y: 480}
-  - tilemapSprite: 4
+  - tileType: 4
     uv00Pixels: {x: 144, y: 432}
     uv11Pixels: {x: 192, y: 480}
+  - tileType: 5
+    uv00Pixels: {x: 192, y: 432}
+    uv11Pixels: {x: 240, y: 480}
+  - tileType: 6
+    uv00Pixels: {x: 240, y: 432}
+    uv11Pixels: {x: 288, y: 480}
+  - tileType: 7
+    uv00Pixels: {x: 288, y: 432}
+    uv11Pixels: {x: 336, y: 480}
 --- !u!4 &1259182200
 Transform:
   m_ObjectHideFlags: 0
@@ -1039,8 +1074,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapVisual: {fileID: 1259182199}
-  seed: 
-  randomSeed: 1
+  seed: 637342422652799480
+  randomSeed: 0
+  treasure: 20
 --- !u!4 &1397317320
 Transform:
   m_ObjectHideFlags: 0
@@ -1520,7 +1556,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068686327}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a8a05de0ac134f4f9d01bef6b9da077, type: 3}
   m_Name: 

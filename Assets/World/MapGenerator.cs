@@ -18,6 +18,7 @@ public class MapGenerator : MonoBehaviour
     [Range(0, 100)]
     public int FillPercent = 50;
     public int[,] map;
+    List<Room> rooms;
     Grid<GameTile> grid;
     bool baseSpawned = false;
     private void Awake()
@@ -38,6 +39,7 @@ public class MapGenerator : MonoBehaviour
             map = SmoothMap();
         }
         ProcessMap();
+
         int[,] borderedMap = new int[width + BorderSize * 2, height + BorderSize * 2];
 
         for (int x = 0; x < borderedMap.GetLength(0); x++)
@@ -51,8 +53,6 @@ public class MapGenerator : MonoBehaviour
                     {
                         grid.GetCellObject(x, y).SetIsWalkable(true);
                     }
-                    // grid.GetCellObject(x, y).SetIsWalkable(map[x - BorderSize, y - BorderSize] != 0);
-
                 }
                 else if (y == height + BorderSize)
                 {
@@ -75,7 +75,6 @@ public class MapGenerator : MonoBehaviour
                 else
                 {
                     borderedMap[x, y] = 1;
-                    // grid.GetCellObject(x, y).SetIsWalkable(true);
                 }
             }
         }
@@ -95,7 +94,7 @@ public class MapGenerator : MonoBehaviour
     void ProcessMap()
     {
         List<List<Coord>> roomRegions = GetRegions(0);
-        List<Room> roomsAboveThreshold = new List<Room>();
+        rooms = new List<Room>();
         foreach (List<Coord> roomRegion in roomRegions)
         {
             if (roomRegion.Count < RoomThreshold)
@@ -105,13 +104,40 @@ public class MapGenerator : MonoBehaviour
                     map[tile.x, tile.y] = 1;
                 }
             }
-            else roomsAboveThreshold.Add(new Room(roomRegion, map));
+            else rooms.Add(new Room(roomRegion, map));
         }
-        roomsAboveThreshold.Sort();
-        foreach (Room r in roomsAboveThreshold)
+        rooms.Sort();
+        rooms.Reverse();
+        Debug.Log(rooms.Count);
+        int treasureToSpawn = 1;
+        foreach (Room r in rooms)
         {
+            if (LevelManager.Instance.treasure <= 0) break;
+
+            if (rooms.IndexOf(r) == rooms.Count - 1)
+            {
+                treasureToSpawn = LevelManager.Instance.treasure;
+            }
+            for (int i = 0; i < treasureToSpawn; i++)
+            {
+                Coord randomTile = r.floorTiles[UnityEngine.Random.Range(0, r.floorTiles.Count)];
+                int x = randomTile.x;
+                int y = randomTile.y;
+                GameTile tile = grid.GetCellObject(x + 1, y + 1);
+                tile.SetTileType(GameTile.Type.Treasure);
+                LevelManager.Instance.treasure--;
+
+                tile.occupied = true;
+                if (IsInMapRange(x + 1, y)) map[x + 1, y] = 0;
+                if (IsInMapRange(x - 1, y)) map[x - 1, y] = 0;
+                if (IsInMapRange(x - 1, y - 1)) map[x - 1, y - 1] = 1;
+                if (IsInMapRange(x + 1, y - 1)) map[x + 1, y - 1] = 1;
+                if (IsInMapRange(x, y - 1)) map[x, y - 1] = 1;
+                if (LevelManager.Instance.treasure < 1) break;
+            }
             Debug.Log(r.roomSize);
         }
+
     }
 
     List<List<Coord>> GetRegions(int tileType)
@@ -248,6 +274,7 @@ public class MapGenerator : MonoBehaviour
     {
         public List<Coord> tiles;
         public List<Coord> edgeTiles;
+        public List<Coord> floorTiles;
         public int roomSize;
         public Room()
         {
@@ -257,7 +284,7 @@ public class MapGenerator : MonoBehaviour
         {
             this.tiles = tiles;
             roomSize = tiles.Count;
-
+            floorTiles = new List<Coord>();
             edgeTiles = new List<Coord>();
             foreach (Coord tile in tiles)
             {
@@ -276,6 +303,14 @@ public class MapGenerator : MonoBehaviour
                             }
                         }
                     }
+                }
+            }
+            foreach (Coord tile in edgeTiles)
+            {
+                if (tile.y - 1 > 0 && tile.y + 1 < map.GetLength(1) && map[tile.x, tile.y - 1] == 1 && map[tile.x, tile.y + 1] == 0)
+                {
+                    floorTiles.Add(tile);
+
                 }
             }
         }

@@ -9,7 +9,7 @@ public class TilemapTest : MonoBehaviour
 
     [SerializeField] private TilemapVisual tilemapVisual;
     private Tilemap tilemap;
-    private GameTile.Sprite tilemapSprite;
+    private GameTile.Type tilemapSprite;
 
     private void Start()
     {
@@ -23,32 +23,32 @@ public class TilemapTest : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
-            tilemap.SetTilemapSprite(mouseWorldPosition, tilemapSprite);
+            tilemap.SetTileType(mouseWorldPosition, tilemapSprite);
         }
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            tilemapSprite = GameTile.Sprite.None;
+            tilemapSprite = GameTile.Type.None;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            tilemapSprite = GameTile.Sprite.Ground;
+            tilemapSprite = GameTile.Type.Ground;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
-            tilemapSprite = GameTile.Sprite.Path;
+            tilemapSprite = GameTile.Type.Path;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            tilemapSprite = GameTile.Sprite.Grass;
+            tilemapSprite = GameTile.Type.Grass;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-            tilemapSprite = GameTile.Sprite.Background;
+            tilemapSprite = GameTile.Type.Background;
             CMDebug.TextPopupMouse(tilemapSprite.ToString());
         }
 

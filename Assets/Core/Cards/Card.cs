@@ -43,8 +43,11 @@ public class Card : MonoBehaviour
                 MinionManager.Instance.SpawnMinion(data.Minion);
                 break;
             case Card.Type.Rope:
-                Debug.Log(GameManager.Instance.selectedMinion.transform.position);
-                Debug.Log(LevelManager.Instance.tilemap.SpawnRope(GameManager.Instance.selectedMinion.transform.position, data.RopeLength));
+
+                if (!LevelManager.Instance.tilemap.SpawnRope(GameManager.Instance.selectedMinion.transform.position, data.RopeLength))
+                {
+                    return;
+                }
 
                 break;
 

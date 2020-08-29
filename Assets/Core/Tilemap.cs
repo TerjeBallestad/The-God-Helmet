@@ -18,12 +18,12 @@ public class Tilemap
         new Pathfinding(grid);
     }
 
-    public void SetTilemapSprite(Vector3 worldPosition, GameTile.Sprite tilemapSprite)
+    public void SetTileType(Vector3 worldPosition, GameTile.Type tileType)
     {
         GameTile tilemapObject = grid.GetCellObject(worldPosition);
         if (tilemapObject != null)
         {
-            tilemapObject.SetTileSprite(tilemapSprite);
+            tilemapObject.SetTileType(tileType);
         }
     }
 
@@ -48,7 +48,6 @@ public class Tilemap
        !GameTileIsWalkable(x - 1, y - 1) &&
        !GameTileIsWalkable(x - 1, y + 1))
         {
-            Debug.Log("Found available spot at " + x + ", " + y);
             SpawnRope(x - 1, y - 1, ropeLength);
             return true;
         }
@@ -57,7 +56,6 @@ public class Tilemap
        !GameTileIsWalkable(x + 1, y - 1) &&
        !GameTileIsWalkable(x + 1, y + 1))
         {
-            Debug.Log("Found available spot at " + x + ", " + y);
             SpawnRope(x + 1, y - 1, ropeLength);
             return true;
         }
@@ -67,24 +65,23 @@ public class Tilemap
             if (ground.GetLength(1) > y + i)
                 if (ground[x, y + i] == 0)
                 {
-                    Debug.Log("Found spot up above, at " + x + ", " + y + ropeLength);
                     SpawnRope(x, y + i, ropeLength);
                     return true;
                 }
         }
 
-
-
         return false;
     }
     public void SpawnRope(int x, int y, int ropeLength)
     {
-        Debug.Log(ropeLength);
         for (int i = 0; i < ropeLength; i++)
         {
-            Debug.Log("setting walkable at " + x + "and " + (y - i));
-            if (grid.GetCellObject(x, y - i).walkable == false)
-                grid.GetCellObject(x, y - i).SetIsWalkable(true);
+            GameTile tile = grid.GetCellObject(x, y - i);
+            if (tile.walkable == false)
+            {
+                tile.SetIsWalkable(true);
+                tile.SetTileType(GameTile.Type.RopeMiddle);
+            }
         }
     }
 

@@ -20,7 +20,7 @@ public class TilemapVisual : MonoBehaviour
     [System.Serializable]
     public struct TilemapSpriteUV
     {
-        public GameTile.Sprite tilemapSprite;
+        public GameTile.Type tileType;
         public Vector2Int uv00Pixels;
         public Vector2Int uv11Pixels;
     }
@@ -36,7 +36,7 @@ public class TilemapVisual : MonoBehaviour
     private Mesh mesh;
     private bool updateMesh;
     private BoxCollider2D box;
-    private Dictionary<GameTile.Sprite, UVCoords> uvCoordsDictionary;
+    private Dictionary<GameTile.Type, UVCoords> uvCoordsDictionary;
 
     private void Awake()
     {
@@ -46,11 +46,11 @@ public class TilemapVisual : MonoBehaviour
         float textureWidth = texture.width;
         float textureHeight = texture.height;
 
-        uvCoordsDictionary = new Dictionary<GameTile.Sprite, UVCoords>();
+        uvCoordsDictionary = new Dictionary<GameTile.Type, UVCoords>();
 
         foreach (TilemapSpriteUV tilemapSpriteUV in tilemapSpriteUVArray)
         {
-            uvCoordsDictionary[tilemapSpriteUV.tilemapSprite] = new UVCoords
+            uvCoordsDictionary[tilemapSpriteUV.tileType] = new UVCoords
             {
                 uv00 = new Vector2(tilemapSpriteUV.uv00Pixels.x / textureWidth, tilemapSpriteUV.uv00Pixels.y / textureHeight),
                 uv11 = new Vector2(tilemapSpriteUV.uv11Pixels.x / textureWidth, tilemapSpriteUV.uv11Pixels.y / textureHeight),
@@ -98,9 +98,9 @@ public class TilemapVisual : MonoBehaviour
                 Vector3 quadSize = new Vector3(1, 1);
 
                 GameTile gridObject = grid.GetCellObject(x, y);
-                GameTile.Sprite tilemapSprite = gridObject.GetTilemapSprite();
+                GameTile.Type tilemapSprite = gridObject.GetTileType();
                 Vector2 gridUV00, gridUV11;
-                if (tilemapSprite == GameTile.Sprite.None)
+                if (tilemapSprite == GameTile.Type.None)
                 {
                     gridUV00 = Vector2.zero;
                     gridUV11 = Vector2.zero;

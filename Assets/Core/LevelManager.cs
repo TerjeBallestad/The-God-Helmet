@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TilemapVisual tilemapVisual;
     public string seed;
     public bool randomSeed = true;
+    public int treasure = 20;
     public Tilemap tilemap { get; private set; }
     private Grid<GameTile> gameLogic;
     private List<TilemapVisual> sprites;
@@ -26,6 +27,8 @@ public class LevelManager : MonoBehaviour
         }
         System.Random randomNumber = new System.Random(seed.GetHashCode());
         tilemap = new Tilemap(randomNumber);
+        tilemap.SetTilemapVisual(tilemapVisual);
+
         for (int x = 0; x < tilemap.grid.GetWidth(); x++)
         {
             for (int y = 0; y < tilemap.grid.GetHeight(); y++)

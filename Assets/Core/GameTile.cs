@@ -1,14 +1,17 @@
 public class GameTile
 {
-    public enum Sprite
+    public enum Type
     {
         None,
         Ground,
         Path,
         Grass,
         Background,
+        RopeMiddle,
+        Treasure,
+        Steps,
     }
-    private Sprite sprite;
+    private Type type;
     public bool walkable;
     public bool occupied;
     public bool mesh;
@@ -50,14 +53,14 @@ public class GameTile
         return System.Convert.ToInt32(walkable).ToString();
     }
 
-    public Sprite GetTilemapSprite()
+    public Type GetTileType()
     {
-        return sprite;
+        return type;
     }
 
-    public void SetTileSprite(Sprite tilemapSprite)
+    public void SetTileType(Type tileType)
     {
-        this.sprite = tilemapSprite;
+        this.type = tileType;
         grid.TriggerCellObjectChanged(x, y);
     }
 
@@ -65,7 +68,7 @@ public class GameTile
     [System.Serializable]
     public class SaveObject
     {
-        public Sprite tilemapSprite;
+        public Type tilemapSprite;
         public int x;
         public int y;
     }
@@ -77,7 +80,7 @@ public class GameTile
     {
         return new SaveObject
         {
-            tilemapSprite = sprite,
+            tilemapSprite = type,
             x = x,
             y = y,
         };
@@ -85,7 +88,7 @@ public class GameTile
 
     public void Load(SaveObject saveObject)
     {
-        sprite = saveObject.tilemapSprite;
+        type = saveObject.tilemapSprite;
     }
 
 }
