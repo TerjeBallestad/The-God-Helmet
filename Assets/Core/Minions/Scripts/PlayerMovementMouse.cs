@@ -10,9 +10,11 @@ public class PlayerMovementMouse : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            if (GameManager.Instance.selectedMinion != null)
+            Minion activeMinion = MinionManager.Instance.activeMinion;
+            if (activeMinion != null && activeMinion.active)
             {
-                GameManager.Instance.selectedMinion.GetComponent<IMovePosition>().SetMovePosition(UtilsClass.GetMouseWorldPosition());
+                activeMinion.StartGoingToDestination(UtilsClass.GetMouseWorldPosition());
+                Debug.Log(activeMinion.name);
             }
         }
     }

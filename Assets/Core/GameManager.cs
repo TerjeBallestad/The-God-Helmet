@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
         Opponent,
     }
     public Turn turn;
-    public Minion selectedMinion;
     private bool followSet = false;
     private Transform camFollow;
     public PolygonCollider2D cameraConfiner;
@@ -25,7 +24,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        turn = Turn.Player;
+        SetPlayerTurn();
         camFollow = transform;
     }
     public void SetOpponentTurn()
@@ -36,12 +35,9 @@ public class GameManager : MonoBehaviour
     public void SetPlayerTurn()
     {
         turn = Turn.Player;
+        MinionManager.Instance.NewTurn();
     }
-    public void SetSelectedMinion(Minion minion)
-    {
-        selectedMinion = minion;
-        SetCameraFollow(minion.transform);
-    }
+
     public void SetCameraFollow(Transform transform)
     {
         camFollow = transform;
@@ -76,8 +72,8 @@ public class GameManager : MonoBehaviour
 
                 if (minion)
                 {
-                    selectedMinion = minion;
-                    Camera.main.GetComponent<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.Follow = selectedMinion.transform;
+                    MinionManager.Instance.SetActiveMinion(minion);
+                    Camera.main.GetComponent<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.Follow = minion.transform;
                 }
             }
         }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class MinionManager : MonoBehaviour
 {
     public static MinionManager Instance { get; private set; }
-
     public GameObject BasePrefab;
     public GameObject MinionPrefab;
     public BaseBuilding baseBuilding;
+    public Minion activeMinion;
     private List<Minion> minions = new List<Minion>();
     private void Awake()
     {
@@ -28,7 +28,22 @@ public class MinionManager : MonoBehaviour
         Minion minion = Instantiate(MinionPrefab).GetComponent<Minion>();
         minion.data = data;
         minion.gameObject.transform.position = baseBuilding.spawnPosition;
-        GameManager.Instance.SetSelectedMinion(minion);
+        SetActiveMinion(minion);
         minions.Add(minion);
+    }
+
+    public void SetActiveMinion(Minion minion)
+    {
+        activeMinion = minion;
+        minion.Activate();
+        GameManager.Instance.SetCameraFollow(minion.transform);
+
+    }
+    public void NewTurn()
+    {
+        foreach (Minion minion in minions)
+        {
+            minion.NewTurn();
+        }
     }
 }

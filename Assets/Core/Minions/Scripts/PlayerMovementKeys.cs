@@ -14,7 +14,7 @@ public class PlayerMovementKeys : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) x = -1f;
 
         Vector3 direction = new Vector3(x, y).normalized;
-        if (GameManager.Instance.selectedMinion)
-            GameManager.Instance.selectedMinion.GetComponent<IMoveVelocity>().SetVelocity(direction);
+        if (MinionManager.Instance.activeMinion)
+            MinionManager.Instance.activeMinion.GetComponent<IMoveVelocity>().SetVelocity(direction);
     }
 }

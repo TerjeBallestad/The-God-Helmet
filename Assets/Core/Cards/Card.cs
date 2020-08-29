@@ -44,7 +44,7 @@ public class Card : MonoBehaviour
                 break;
             case Card.Type.Rope:
 
-                if (!LevelManager.Instance.tilemap.SpawnRope(GameManager.Instance.selectedMinion.transform.position, data.RopeLength))
+                if (!LevelManager.Instance.tilemap.SpawnRope(MinionManager.Instance.activeMinion.transform.position, data.RopeLength))
                 {
                     return;
                 }

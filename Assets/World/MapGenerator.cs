@@ -135,7 +135,6 @@ public class MapGenerator : MonoBehaviour
                 if (IsInMapRange(x, y - 1)) map[x, y - 1] = 1;
                 if (LevelManager.Instance.treasure < 1) break;
             }
-            Debug.Log(r.roomSize);
         }
 
     }
