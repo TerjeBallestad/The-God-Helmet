@@ -12,8 +12,8 @@ public class LevelManager : MonoBehaviour
     public bool randomSeed = true;
     public int treasure = 20;
     public Tilemap tilemap { get; private set; }
-    private Grid<GameTile> gameLogic;
-    private List<TilemapVisual> sprites;
+    public GameTile currentTile;
+
 
     private void Awake()
     {

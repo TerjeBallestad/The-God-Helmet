@@ -10,6 +10,7 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
     private int pathIndex = -1;
     bool atDestination;
     Minion minion;
+    float reachedTargetDistance = 0.1f;
 
     private void Start()
     {
@@ -18,10 +19,12 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
 
     public void SetMovePosition(Vector3 position)
     {
-        List<Vector3> tempPath = Pathfinding.Instance.FindPath(transform.position, position);
+        Vector3 startPosition = LevelManager.Instance.tilemap.grid.GetWorldPosition(LevelManager.Instance.currentTile.x, LevelManager.Instance.currentTile.y);
+        List<Vector3> tempPath = Pathfinding.Instance.FindPath(startPosition, position);
         if (tempPath != null && tempPath.Count > 1)
         {
             path = tempPath;
+
             for (int i = 0; i < path.Count - 1; i++)
             {
                 Debug.DrawLine(path[i], path[i + 1], Color.green, 3f);
@@ -42,28 +45,29 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
     {
         if (pathIndex != -1)
         {
-            if (minion) minion.DeActivate();
+            if (minion) { minion.DeActivate(); }
 
             Vector3 nextPathPosition = path[pathIndex];
-            Vector3 direction = (nextPathPosition - transform.position).normalized;
-            GetComponent<IMoveVelocity>().SetVelocity(direction);
-            float reachedTargetDistance = 0.1f;
             if (Vector3.Distance(transform.position, nextPathPosition) < reachedTargetDistance)
             {
                 pathIndex++;
                 if (pathIndex >= path.Count)
                 {
                     pathIndex = -1;
-                    if (minion) minion.Activate();
+                    LevelManager.Instance.currentTile = LevelManager.Instance.tilemap.grid.GetCellObject(nextPathPosition);
+                    if (minion) { minion.Activate(); }
 
                 }
             }
+            Vector3 direction = (nextPathPosition - transform.position).normalized;
+            GetComponent<IMoveVelocity>().SetVelocity(direction);
+
         }
         else
         {
             //idle
             GetComponent<IMoveVelocity>().SetVelocity(Vector3.zero);
-            if (minion) minion.Activate();
+            // if (minion) minion.Activate();
 
         }
     }

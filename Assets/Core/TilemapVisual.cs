@@ -33,15 +33,30 @@ public class TilemapVisual : MonoBehaviour
 
     [SerializeField] private TilemapSpriteUV[] tilemapSpriteUVArray;
     private Grid<GameTile> grid;
-    private Mesh mesh;
+    private Mesh itemMesh;
+    private Mesh selectableIndicatorMesh;
     private bool updateMesh;
     private BoxCollider2D box;
     private Dictionary<GameTile.Type, UVCoords> uvCoordsDictionary;
 
+
     private void Awake()
     {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        itemMesh = new Mesh();
+        selectableIndicatorMesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = itemMesh;
+        itemMesh.name = "items";
+        GameObject selectableIndicator = new GameObject("selectable indicator");
+        selectableIndicator.transform.SetParent(transform);
+        selectableIndicator.AddComponent<MeshFilter>().mesh = selectableIndicatorMesh;
+        selectableIndicator.AddComponent<MeshRenderer>().material = GetComponent<MeshRenderer>().material;
+        selectableIndicatorMesh.name = "selectable";
+
+
+
+
+
+
         Texture texture = GetComponent<MeshRenderer>().material.mainTexture;
         float textureWidth = texture.width;
         float textureHeight = texture.height;
@@ -88,7 +103,9 @@ public class TilemapVisual : MonoBehaviour
 
     private void UpdateTilemapVisual()
     {
-        MeshUtils.CreateEmptyMeshArrays(grid.GetWidth() * grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
+        MeshUtils.CreateEmptyMeshArrays(grid.GetWidth() * grid.GetHeight(), out Vector3[] itemVertices, out Vector2[] itemUV, out int[] itemTriangles);
+        MeshUtils.CreateEmptyMeshArrays(grid.GetWidth() * grid.GetHeight(), out Vector3[] selectableVerices, out Vector2[] selectableUV, out int[] selectableTriangles);
+
 
         for (int x = 0; x < grid.GetWidth(); x++)
         {
@@ -98,9 +115,9 @@ public class TilemapVisual : MonoBehaviour
                 Vector3 quadSize = new Vector3(1, 1);
 
                 GameTile gridObject = grid.GetCellObject(x, y);
-                GameTile.Type tilemapSprite = gridObject.GetTileType();
+                GameTile.Type tileType = gridObject.GetTileType();
                 Vector2 gridUV00, gridUV11;
-                if (tilemapSprite == GameTile.Type.None)
+                if (tileType == GameTile.Type.None)
                 {
                     gridUV00 = Vector2.zero;
                     gridUV11 = Vector2.zero;
@@ -108,17 +125,39 @@ public class TilemapVisual : MonoBehaviour
                 }
                 else
                 {
-                    UVCoords uvCoords = uvCoordsDictionary[tilemapSprite];
+                    UVCoords uvCoords = uvCoordsDictionary[tileType];
                     gridUV00 = uvCoords.uv00;
                     gridUV11 = uvCoords.uv11;
                 }
-                MeshUtils.AddToMeshArrays(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + quadSize * .5f, 0f, quadSize, gridUV00, gridUV11);
+
+                MeshUtils.AddToMeshArrays(itemVertices, itemUV, itemTriangles, index, grid.GetWorldPosition(x, y) + quadSize * .5f, 0f, quadSize, gridUV00, gridUV11);
+
+                if (gridObject.selectable)
+                {
+                    UVCoords uvCoords = uvCoordsDictionary[GameTile.Type.Selectable];
+                    gridUV00 = uvCoords.uv00;
+                    gridUV11 = uvCoords.uv11;
+                    quadSize = new Vector3(1, 1);
+
+                }
+                MeshUtils.AddToMeshArrays(selectableVerices, selectableUV, selectableTriangles, index, grid.GetWorldPosition(x, y) + quadSize * .5f, 0f, quadSize, gridUV00, gridUV11);
+
+
+
             }
         }
 
-        mesh.vertices = vertices;
-        mesh.uv = uv;
-        mesh.triangles = triangles;
+
+
+        selectableIndicatorMesh.vertices = selectableVerices;
+        selectableIndicatorMesh.uv = selectableUV;
+        selectableIndicatorMesh.triangles = selectableTriangles;
+
+
+        itemMesh.vertices = itemVertices;
+        itemMesh.uv = itemUV;
+        itemMesh.triangles = itemTriangles;
+
     }
 
 }

@@ -15,6 +15,7 @@ public class MinionManager : MonoBehaviour
         Instance = this;
     }
 
+
     public void SpawnBase(Vector3 position)
     {
         GameObject building = Instantiate(BasePrefab, position, Quaternion.identity);
@@ -28,7 +29,10 @@ public class MinionManager : MonoBehaviour
         Minion minion = Instantiate(MinionPrefab).GetComponent<Minion>();
         minion.data = data;
         minion.gameObject.transform.position = baseBuilding.spawnPosition;
+        LevelManager.Instance.currentTile = LevelManager.Instance.tilemap.grid.GetCellObject(new Vector3(baseBuilding.spawnPosition.x, baseBuilding.spawnPosition.y));
         SetActiveMinion(minion);
+        minion.NewTurn();
+        minion.Activate();
         minions.Add(minion);
     }
 
@@ -37,7 +41,6 @@ public class MinionManager : MonoBehaviour
         activeMinion = minion;
         minion.Activate();
         GameManager.Instance.SetCameraFollow(minion.transform);
-
     }
     public void NewTurn()
     {

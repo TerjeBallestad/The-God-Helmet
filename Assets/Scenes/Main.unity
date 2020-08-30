@@ -783,7 +783,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: 0
-  selectedMinion: {fileID: 0}
   cameraConfiner: {fileID: 0}
 --- !u!4 &1048616494
 Transform:
@@ -1391,6 +1390,7 @@ MonoBehaviour:
   BasePrefab: {fileID: 5185014245858587332, guid: 96346d22603de4542be876c65baf31d4, type: 3}
   MinionPrefab: {fileID: 4717137590724206483, guid: 375e81752fc9943bda462e5caf35eba3, type: 3}
   baseBuilding: {fileID: 0}
+  activeMinion: {fileID: 0}
 --- !u!4 &1917042175
 Transform:
   m_ObjectHideFlags: 0

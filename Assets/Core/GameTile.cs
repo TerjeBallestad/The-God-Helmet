@@ -9,11 +9,12 @@ public class GameTile
         Background,
         RopeMiddle,
         Treasure,
-        Steps,
+        Selectable,
     }
     private Type type;
     public bool walkable;
     public bool occupied;
+    public bool selectable;
     public bool mesh;
     private Grid<GameTile> grid;
     public int x;
@@ -50,12 +51,18 @@ public class GameTile
 
     public override string ToString()
     {
-        return System.Convert.ToInt32(walkable).ToString();
+        return System.Convert.ToInt32(type).ToString();
     }
 
     public Type GetTileType()
     {
         return type;
+    }
+
+    public void SetSelectable(bool selectable)
+    {
+        this.selectable = selectable;
+        grid.TriggerCellObjectChanged(x, y);
     }
 
     public void SetTileType(Type tileType)
@@ -68,7 +75,7 @@ public class GameTile
     [System.Serializable]
     public class SaveObject
     {
-        public Type tilemapSprite;
+        public Type tileType;
         public int x;
         public int y;
     }
@@ -80,7 +87,7 @@ public class GameTile
     {
         return new SaveObject
         {
-            tilemapSprite = type,
+            tileType = type,
             x = x,
             y = y,
         };
@@ -88,7 +95,7 @@ public class GameTile
 
     public void Load(SaveObject saveObject)
     {
-        type = saveObject.tilemapSprite;
+        type = saveObject.tileType;
     }
 
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Minion : MonoBehaviour
 {
@@ -31,11 +32,12 @@ public class Minion : MonoBehaviour
     public void NewTurn()
     {
         steps = data.Steps;
+        Debug.Log(steps);
     }
     public void Activate()
     {
         active = true;
-        GameTile startTile = LevelManager.Instance.tilemap.grid.GetCellObject(transform.position);
+        GameTile startTile = LevelManager.Instance.currentTile;
         int startX = startTile.x;
         int startY = startTile.y;
         List<GameTile> path;
@@ -48,11 +50,15 @@ public class Minion : MonoBehaviour
                 if (endTile != null && endTile.walkable == true)
                 {
                     path = Pathfinding.Instance.FindPath(startX, startY, endTile.x, endTile.y);
+
                     if (path == null || path.Count < 1) break;
+                    int index = Mathf.Max(path.Count - 1 - steps, 0);
+                    int range = Mathf.Min(path.Count - 1 - index, steps);
+                    range = Mathf.Max(range, 0);
+                    path.RemoveRange(index, range);
                     foreach (GameTile tile in path)
                     {
-                        tile.SetTileType(GameTile.Type.Steps);
-
+                        tile.SetSelectable(true);
                     }
                 }
 
@@ -66,6 +72,8 @@ public class Minion : MonoBehaviour
     public void StartGoingToDestination(Vector3 destination)
     {
         if (active)
+        {
             movement.SetMovePosition(destination);
+        }
     }
 }
