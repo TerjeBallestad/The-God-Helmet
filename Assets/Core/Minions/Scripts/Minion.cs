@@ -32,7 +32,6 @@ public class Minion : MonoBehaviour
     public void NewTurn()
     {
         steps = data.Steps;
-        Debug.Log(steps);
     }
     public void Activate()
     {

@@ -48,8 +48,12 @@ public class Card : MonoBehaviour
                 {
                     return;
                 }
-
+                else
+                {
+                    MinionManager.Instance.activeMinion.Activate();
+                }
                 break;
+
 
             default:
                 Debug.Log("playing " + data.name.ToString());

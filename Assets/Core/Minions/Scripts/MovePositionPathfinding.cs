@@ -25,12 +25,12 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
         {
             path = tempPath;
 
-            for (int i = 0; i < path.Count - 1; i++)
-            {
-                Debug.DrawLine(path[i], path[i + 1], Color.green, 3f);
-            }
+            // for (int i = 0; i < path.Count - 1; i++)
+            // {
+            //     Debug.DrawLine(path[i], path[i + 1], Color.green, 3f);
+            // }
             pathIndex = 0;
-
+            LevelManager.Instance.tilemap.ClearSelectableTiles();
             // if (minion) minion.RemoveSteps(path.Count);
         }
 

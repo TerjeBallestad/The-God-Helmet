@@ -65,7 +65,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (hit)
             {
                 Minion minion = hit.transform.GetComponent<Minion>();

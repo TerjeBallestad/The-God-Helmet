@@ -9,6 +9,7 @@ public class Tilemap
     int[,] ground;
     public Grid<GameTile> grid;
     public List<GameTile> walkableTiles;
+    public List<GameTile> selectableTiles;
 
     public Tilemap(System.Random randomNumber)
     {
@@ -16,6 +17,7 @@ public class Tilemap
         grid = MapGenerator.Instance.GenerateMap(randomNumber);
         ground = MapGenerator.Instance.map;
         new Pathfinding(grid);
+        selectableTiles = new List<GameTile>();
     }
 
     public void SetTileType(Vector3 worldPosition, GameTile.Type tileType)
@@ -30,6 +32,15 @@ public class Tilemap
     public void SetTilemapVisual(TilemapVisual tilemapVisual)
     {
         tilemapVisual.SetGrid(this, grid);
+    }
+
+    public void ClearSelectableTiles()
+    {
+        foreach (GameTile tile in selectableTiles)
+        {
+            tile.SetSelectable(false);
+        }
+        selectableTiles.Clear();
     }
 
     public bool SpawnRope(Vector3 worldPosition, int ropeLength)
@@ -90,11 +101,11 @@ public class Tilemap
         Vector3[] positions = new Vector3[amount];
         for (int i = 0; i < amount; i++)
         {
-            GameTile tile = walkableTiles[UnityEngine.Random.Range(0, walkableTiles.Count)];
+            GameTile tile = walkableTiles[MapGenerator.Instance.seed.Next(0, walkableTiles.Count)];
 
             while (tile.occupied || tile.y == grid.GetHeight() - 1)
             {
-                tile = walkableTiles[UnityEngine.Random.Range(0, walkableTiles.Count)];
+                tile = walkableTiles[MapGenerator.Instance.seed.Next(0, walkableTiles.Count)];
             }
             positions[i] = grid.GetWorldPosition(tile.x, tile.y);
             tile.occupied = true;

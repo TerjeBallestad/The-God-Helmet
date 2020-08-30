@@ -18,6 +18,7 @@ public class MapGenerator : MonoBehaviour
     [Range(0, 100)]
     public int FillPercent = 50;
     public int[,] map;
+    public System.Random seed;
     List<Room> rooms;
     Grid<GameTile> grid;
     bool baseSpawned = false;
@@ -28,11 +29,12 @@ public class MapGenerator : MonoBehaviour
 
     public Grid<GameTile> GenerateMap(System.Random randomNumber)
     {
+        seed = randomNumber;
         Vector3 origin = new Vector3(-width * 0.5f - BorderSize, -height - BorderSize * 2);
         grid = new Grid<GameTile>(width + BorderSize * 2, height + BorderSize * 2, origin, (Grid<GameTile> g, int x, int y) => new GameTile(g, x, y), showDebug);
         map = new int[width, height];
 
-        RandomFillMap(randomNumber);
+        RandomFillMap();
 
         for (int i = 0; i < Iterations; i++)
         {
@@ -120,7 +122,7 @@ public class MapGenerator : MonoBehaviour
             }
             for (int i = 0; i < treasureToSpawn; i++)
             {
-                Coord randomTile = r.floorTiles[UnityEngine.Random.Range(0, r.floorTiles.Count)];
+                Coord randomTile = r.floorTiles[seed.Next(0, r.floorTiles.Count - 1)];
                 int x = randomTile.x;
                 int y = randomTile.y;
                 GameTile tile = grid.GetCellObject(x + 1, y + 1);
@@ -194,7 +196,7 @@ public class MapGenerator : MonoBehaviour
         return tiles;
     }
 
-    void RandomFillMap(System.Random randomNumber)
+    void RandomFillMap()
     {
         for (int x = 0; x < width; x++)
         {
@@ -206,7 +208,7 @@ public class MapGenerator : MonoBehaviour
                 }
                 else
                 {
-                    map[x, y] = (randomNumber.Next(0, 100) < FillPercent) ? 1 : 0;
+                    map[x, y] = (seed.Next(0, 100) < FillPercent) ? 1 : 0;
                 }
             }
         }
@@ -266,6 +268,7 @@ public class MapGenerator : MonoBehaviour
         path[3] = new Vector2(grid.GetWorldPosition(grid.GetWidth(), 0).x - 0.5f, grid.GetWorldPosition(grid.GetWidth(), 0).y + 0.5f);
 
         poly.SetPath(0, path);
+        poly.isTrigger = true;
 
         GameManager.Instance.cameraConfiner = poly;
     }

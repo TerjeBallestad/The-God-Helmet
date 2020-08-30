@@ -147,8 +147,6 @@ public class TilemapVisual : MonoBehaviour
             }
         }
 
-
-
         selectableIndicatorMesh.vertices = selectableVerices;
         selectableIndicatorMesh.uv = selectableUV;
         selectableIndicatorMesh.triangles = selectableTriangles;

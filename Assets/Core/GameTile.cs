@@ -62,6 +62,7 @@ public class GameTile
     public void SetSelectable(bool selectable)
     {
         this.selectable = selectable;
+        if (selectable) LevelManager.Instance.tilemap.selectableTiles.Add(this);
         grid.TriggerCellObjectChanged(x, y);
     }
 

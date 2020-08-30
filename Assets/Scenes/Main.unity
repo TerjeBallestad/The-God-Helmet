@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 45624719}
   - component: {fileID: 45624718}
   - component: {fileID: 45624721}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: MapGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +466,7 @@ GameObject:
   - component: {fileID: 549434364}
   - component: {fileID: 549434365}
   - component: {fileID: 549434367}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}

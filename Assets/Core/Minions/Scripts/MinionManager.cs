@@ -30,6 +30,7 @@ public class MinionManager : MonoBehaviour
         minion.data = data;
         minion.gameObject.transform.position = baseBuilding.spawnPosition;
         LevelManager.Instance.currentTile = LevelManager.Instance.tilemap.grid.GetCellObject(new Vector3(baseBuilding.spawnPosition.x, baseBuilding.spawnPosition.y));
+        LevelManager.Instance.tilemap.ClearSelectableTiles();
         SetActiveMinion(minion);
         minion.NewTurn();
         minion.Activate();
