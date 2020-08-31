@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CodeMonkey.Utils;
 
 [RequireComponent(typeof(LineRenderer))]
 public class ArcLineCalculator : MonoBehaviour
@@ -21,27 +22,35 @@ public class ArcLineCalculator : MonoBehaviour
         g = Mathf.Abs(Physics2D.gravity.y);
     }
 
-    private void OnValidate()
-    {
-        if (lr != null && Application.isPlaying)
-        {
-            RenderArc();
-        }
-    }
 
-    // Start is called before the first frame update
     public void ShootProjectile(Vector3 target)
     {
+        Vector3 diff = target - transform.position;
+        Vector3 diffGround = new Vector3(diff.x, 0, diff.z);
+        int numberOfSolutions;
+        Vector3[] solutions = new Vector3[2];
         this.target = target;
-        GameObject projectile = Instantiate(projectilePrefab, transform.position + Vector3.up, projectilePrefab.transform.rotation);
-        CalculateVelocityAndAngle(projectile.GetComponent<Rigidbody2D>());
-        RenderArc();
+        numberOfSolutions = fts.solve_ballistic_arc(transform.position + (Vector3.up * 2), 10, target, g, out solutions[0], out solutions[1]);
+
+        if (numberOfSolutions > 1)
+        {
+            GameObject projectile = Instantiate(projectilePrefab, transform.position + Vector3.up, projectilePrefab.transform.rotation);
+            BallisticMotion motion = projectile.GetComponent<BallisticMotion>();
+            // projectile.GetComponent<Rigidbody2D>().AddForce(solutions[1], ForceMode2D.Force);
+            motion.Initialize(transform.position + Vector3.up, g);
+            Debug.Log(solutions[1]);
+
+            motion.AddImpulse(solutions[1]);
+
+
+        }
+        // CalculateVelocityAndAngle(projectile.GetComponent<Rigidbody2D>());
+        // RenderArc();
     }
 
-    //initialization
+
     void RenderArc()
     {
-        // obsolete: lr.SetVertexCount(resolution + 1);
         lr.positionCount = resolution + 1;
         lr.SetPositions(CalculateArcArray());
     }
@@ -68,6 +77,7 @@ public class ArcLineCalculator : MonoBehaviour
         float y = x * Mathf.Tan(radianAngle) - ((g * x * x) / (2 * velocity * velocity * Mathf.Cos(radianAngle) * Mathf.Cos(radianAngle)));
         return new Vector3(x + transform.position.x, y + transform.position.y);
     }
+
     void CalculateVelocityAndAngle(Rigidbody2D rigid)
     {
         Vector3 originOfLaunch = transform.position + Vector3.up;
