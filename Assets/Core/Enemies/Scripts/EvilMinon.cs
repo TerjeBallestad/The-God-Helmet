@@ -8,6 +8,9 @@ public class EvilMinon : MonoBehaviour
     public bool active = false;
     private SpriteRenderer spriteRenderer;
     ArcLineCalculator projectileShooter;
+    public GameTile tile;
+    int searchRadius = 6;
+    public bool finishedExecutingPlan = false;
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -18,10 +21,53 @@ public class EvilMinon : MonoBehaviour
     public void ActivateMinion()
     {
         active = true;
+
+        Debug.Log("I'm active " + gameObject.name);
+    }
+
+    public void CalculatePlan()
+    {
+
+    }
+
+    public void SearchForClosestMinion()
+    {
+        for (int i = 0; i < searchRadius; i++)
+        {
+            // top
+            for (int x = tile.x - i; x < tile.x + i; x++)
+            {
+
+            }
+            for (int y = tile.y - i; y < tile.y + i; y++)
+            {
+
+            }
+        }
+    }
+
+    public void ExecutePlan()
+    {
+        GameManager.Instance.SetCameraFollow(transform);
+        StartCoroutine(Plan());
+    }
+
+    IEnumerator Plan()
+    {
+        finishedExecutingPlan = false;
+        yield return new WaitForSeconds(0.5f);
         if (MinionManager.Instance.activeMinion != null)
         {
-            projectileShooter.ShootProjectile(MinionManager.Instance.activeMinion.transform.position);
+            Projectile projectile = projectileShooter.ShootProjectile(MinionManager.Instance.activeMinion.transform.position);
+            if (projectile)
+            {
+                GameManager.Instance.SetCameraFollow(projectile.transform);
+                yield return new WaitWhile(() => projectile.active);
+                GameManager.Instance.SetCameraFollow(transform);
+                Destroy(projectile.gameObject);
+            }
         }
-        Debug.Log("I'm active " + gameObject.name);
+        yield return new WaitForSeconds(2f);
+        finishedExecutingPlan = true;
     }
 }

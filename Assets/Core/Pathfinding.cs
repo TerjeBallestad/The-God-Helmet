@@ -19,7 +19,7 @@ public class Pathfinding
     {
         return grid;
     }
-    public List<Vector3> FindPath(Vector3 startWorldPosition, Vector3 endWorldPosition)
+    public List<GameTile> FindPath(Vector3 startWorldPosition, Vector3 endWorldPosition)
     {
         grid.GetCell(startWorldPosition, out int startX, out int startY);
         grid.GetCell(endWorldPosition, out int endX, out int endY);
@@ -31,12 +31,11 @@ public class Pathfinding
         }
         else
         {
-            List<Vector3> vectorPath = new List<Vector3>();
+            List<GameTile> vectorPath = new List<GameTile>();
             foreach (GameTile node in path)
             {
-                vectorPath.Add(grid.GetWorldPosition(node.x, node.y) + new Vector3(0.5f, 0));
+                vectorPath.Add(node);
             }
-            vectorPath.RemoveAt(0);
             return vectorPath;
         }
     }

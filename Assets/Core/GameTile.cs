@@ -12,6 +12,7 @@ public class GameTile
         Selectable,
     }
     private Type type;
+    private Minion minion;
     public bool walkable;
     public bool occupied;
     public bool selectable;
@@ -70,6 +71,15 @@ public class GameTile
     {
         this.type = tileType;
         grid.TriggerCellObjectChanged(x, y);
+    }
+
+    public Minion GetMinion()
+    {
+        return minion;
+    }
+    public void SetMinion(Minion minion)
+    {
+        this.minion = minion;
     }
 
 

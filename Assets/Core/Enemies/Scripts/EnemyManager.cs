@@ -32,23 +32,33 @@ public class EnemyManager : MonoBehaviour
 
     IEnumerator EvilPlans()
     {
-        Debug.Log("executing evil plans");
-        yield return new WaitForSeconds(2);
-        Debug.Log("lol, haha, look at all that evil we just did");
+        foreach (EvilMinon minion in minions)
+        {
+            if (minion.active)
+            {
+                Debug.Log(minion.gameObject.name + " executing evil plans");
+                minion.ExecutePlan();
+                yield return new WaitUntil(() => minion.finishedExecutingPlan);
+            }
+        }
+        Debug.Log("Player turn");
         GameManager.Instance.SetPlayerTurn();
     }
 
     public void SpawnEvilMinons()
     {
-        foreach (EvilMinonAmount minion in minionsToSpawn)
+        foreach (EvilMinonAmount minionToSpawn in minionsToSpawn)
         {
-            Vector3[] spawnPositions = LevelManager.Instance.tilemap.GetEnemyPositions(minion.amount);
-            for (int i = 0; i < minion.amount; i++)
+            Vector3[] spawnPositions = LevelManager.Instance.tilemap.GetEnemyPositions(minionToSpawn.amount);
+            for (int i = 0; i < minionToSpawn.amount; i++)
             {
                 Vector3 spawnPosition = new Vector3(spawnPositions[i].x + 0.5f, spawnPositions[i].y);
-                GameObject minonObject = Instantiate(evilMinonPrefab, spawnPosition, Quaternion.identity);
-                minonObject.GetComponent<EvilMinon>().data = minion.data;
-                minonObject.transform.SetParent(transform);
+                GameObject minionObject = Instantiate(evilMinonPrefab, spawnPosition, Quaternion.identity);
+                EvilMinon minion = minionObject.GetComponent<EvilMinon>();
+                minion.data = minionToSpawn.data;
+                minion.tile = LevelManager.Instance.tilemap.grid.GetCellObject(spawnPosition);
+                minions.Add(minion);
+                minionObject.transform.SetParent(transform);
             }
         }
     }

@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
     public void SetPlayerTurn()
     {
         turn = Turn.Player;
+        if (MinionManager.Instance.activeMinion)
+            SetCameraFollow(MinionManager.Instance.activeMinion.transform);
         MinionManager.Instance.NewTurn();
     }
 

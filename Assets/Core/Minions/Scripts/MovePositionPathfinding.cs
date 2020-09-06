@@ -6,7 +6,7 @@ using System.Linq;
 
 public class MovePositionPathfinding : MonoBehaviour, IMovePosition
 {
-    private List<Vector3> path;
+    private List<GameTile> path;
     private int pathIndex = -1;
     bool atDestination;
     Minion minion;
@@ -20,7 +20,7 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
     public void SetMovePosition(Vector3 position)
     {
         Vector3 startPosition = LevelManager.Instance.tilemap.grid.GetWorldPosition(LevelManager.Instance.currentTile.x, LevelManager.Instance.currentTile.y);
-        List<Vector3> tempPath = Pathfinding.Instance.FindPath(startPosition, position);
+        List<GameTile> tempPath = Pathfinding.Instance.FindPath(startPosition, position);
         if (tempPath != null && tempPath.Count > 1)
         {
             path = tempPath;
@@ -47,7 +47,7 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
         {
             if (minion) { minion.DeActivate(); }
 
-            Vector3 nextPathPosition = path[pathIndex];
+            Vector3 nextPathPosition = LevelManager.Instance.tilemap.grid.GetWorldPosition(path[pathIndex].x, path[pathIndex].y) + new Vector3(0.5f, 0);
             if (Vector3.Distance(transform.position, nextPathPosition) < reachedTargetDistance)
             {
                 pathIndex++;
@@ -58,6 +58,10 @@ public class MovePositionPathfinding : MonoBehaviour, IMovePosition
                     if (minion) { minion.Activate(); }
 
                 }
+            }
+            if (!path[pathIndex].GetMinion())
+            {
+                path[pathIndex].SetMinion(minion);
             }
             Vector3 direction = (nextPathPosition - transform.position).normalized;
             GetComponent<IMoveVelocity>().SetVelocity(direction);

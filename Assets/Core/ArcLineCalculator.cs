@@ -23,7 +23,7 @@ public class ArcLineCalculator : MonoBehaviour
     }
 
 
-    public void ShootProjectile(Vector3 target)
+    public Projectile ShootProjectile(Vector3 target)
     {
         Vector3 diff = target - transform.position;
         Vector3 diffGround = new Vector3(diff.x, 0, diff.z);
@@ -38,12 +38,17 @@ public class ArcLineCalculator : MonoBehaviour
             BallisticMotion motion = projectile.GetComponent<BallisticMotion>();
             // projectile.GetComponent<Rigidbody2D>().AddForce(solutions[1], ForceMode2D.Force);
             motion.Initialize(transform.position + Vector3.up, g);
-            Debug.Log(solutions[1]);
+
 
             motion.AddImpulse(solutions[1]);
+            angle = Vector2.Angle(Vector2.zero, new Vector2(solutions[1].x, solutions[1].y));
 
+            velocity = 100;
+            RenderArc();
+            return projectile.GetComponent<Projectile>();
 
         }
+        else return null;
         // CalculateVelocityAndAngle(projectile.GetComponent<Rigidbody2D>());
         // RenderArc();
     }

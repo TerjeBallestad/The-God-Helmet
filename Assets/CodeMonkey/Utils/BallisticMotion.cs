@@ -49,7 +49,7 @@ public class BallisticMotion : MonoBehaviour
             lastPos = curPos;
             transform.position = newPos;
 
-            Debug.Log(GetComponent<Rigidbody2D>().velocity);
+
             impulse = Vector3.zero;
         }
         // Z-kill
